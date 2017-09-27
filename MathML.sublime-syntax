@@ -1,0 +1,253 @@
+%YAML 1.2
+---
+name: MathML
+file_extensions:
+  - mathml
+  - mathm
+  - mhtml
+first_line_match: (?i)<(!DOCTYPE\s*)?math
+scope: text.mathml.basic
+contexts:
+  main:
+    - match: (<\?)(xml)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.xml.mathml
+      push:
+        - meta_scope: meta.tag.preprocessor.xml.mathml
+        - match: '\?>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-generic-attribute
+        - include: string-double-quoted
+        - include: string-single-quoted
+    - match: <!--
+      scope: punctuation.definition.comment.mathml
+      push:
+        - meta_scope: comment.block.mathml
+        - match: '--\s*>'
+          pop: true
+        - match: "--"
+          scope: invalid.illegal.bad-comments.mathml
+    - match: <!
+      scope: punctuation.definition.tag.mathml
+      push:
+        - meta_scope: meta.tag.sgml.mathml
+        - match: ">"
+          scope: punctuation.definition.tag.mathml
+          pop: true
+        - match: (?i:DOCTYPE)
+          scope: entity.name.tag.doctype.mathml
+          push:
+            - meta_scope: meta.tag.sgml.doctype.mathml
+            - match: (?=>)
+              pop: true
+            - match: '"[^">]*"'
+              scope: string.quoted.double.doctype.identifiers-and-DTDs.mathml
+        - match: (\s*)(?!--|>)\S(\s*)
+          scope: invalid.illegal.bad-comments.mathml
+
+    # Matches the 'math' tag, which has some unique attributes
+    - match: (</?)((?i:math)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.structure.math.mathml
+      push:
+        - meta_scope: meta.tag.structure.math.mathml
+        - match: '>'
+          scope: punctuation.definition.tag-stuff.end.mathml
+          pop: true
+        - include: math-tags
+
+    - match: (</?)((?i:math|semantics|annotation(-xml)?)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.structure.any.mathml
+      push:
+        - meta_scope: meta.tag.structure.any.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-stuff
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mglyph|mi|mlabeledtr|mlongdiv|mmultiscripts|mn|mo|mover|mpadded|mphantom|mroot|mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.any.mathml
+      push:
+        - meta_scope: meta.tag.block.any.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-stuff
+    - include: entities
+    - match: <>
+      scope: invalid.illegal.incomplete.mathml
+  entities-common:
+    - match: "(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)"
+      scope: constant.character.entity.mathl
+      captures:
+        1: punctuation.definition.entity.mathml
+        3: punctuation.definition.entity.mathml
+  attribute-entities:
+    - include: entities-common
+  entities:
+    - include: entities-common
+    - match: "&"
+      scope: invalid.illegal.bad-ampersand.mathml
+  string-double-quoted:
+    - match: '"'
+      scope: punctuation.definition.string.begin.mathml
+      push:
+        - meta_scope: string.quoted.double.mathml
+        - match: '"'
+          scope: punctuation.definition.string.end.mathml
+          pop: true
+        - include: entities
+  string-single-quoted:
+    - match: "'"
+      scope: punctuation.definition.string.begin.mathml
+      push:
+        - meta_scope: string.quoted.single.mathml
+        - match: "'"
+          scope: punctuation.definition.string.end.mathml
+          pop: true
+        - include: entities
+
+  tag-generic-attribute:
+    - match: '(?:^|\s+)(([a-zA-Z0-9:\-_.]+)\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.mathml
+        2: entity.other.attribute-name.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+    - match: '\s+([a-zA-Z0-9:\-_.]+)'
+      captures:
+        1: entity.other.attribute-name.mathml
+
+  tag-class-attribute:
+    - match: '(?:^|\s+)\b((class)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.class.mathml
+        2: entity.other.attribute-name.class.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.class.mathml string.quoted.double.mathml
+            - meta_content_scope: meta.class-name.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.class.mathml string.quoted.single.mathml
+            - meta_content_scope: meta.class-name.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.class.mathml string.unquoted.mathml meta.class-name.mathml
+        - match: ''
+          pop: true
+
+  tag-id-attribute:
+    - match: '(?:^|\s+)\b((id)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.id.mathml
+        2: entity.other.attribute-name.id.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.id.mathml string.quoted.double.mathml
+            - meta_content_scope: meta.toc-list.id.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.id.mathml string.quoted.single.mathml
+            - meta_content_scope: meta.toc-list.id.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml meta.toc-list.id.mathml
+        - match: ''
+          pop: true
+
+  math-tags:
+    - match: '(?:^|\s+)\b((display)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.display.mathml
+        2: entity.other.attribute-name.display.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '(")(inline|block)(")'
+          captures:
+            1: meta.attribute-with-value.display.mathml string.quoted.double.mathml
+            2: meta.toc-list.display.mathml
+            3: punctuation.definition.string.end.mathml
+        - match: "(')(inline|block)(')"
+          captures:
+            1: meta.attribute-with-value.display.mathml string.quoted.single.mathml
+            2: meta.toc-list.display.mathml
+            3: punctuation.definition.string.end.mathml
+    - match: '(?:^|\s+)\b((altimg)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.altimg.mathml
+        2: entity.other.attribute-name.altimg.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.altimg.mathml string.quoted.double.mathml
+            - meta_content_scope: meta.toc-list.altimg.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.altimg.mathml string.quoted.single.mathml
+            - meta_content_scope: meta.toc-list.altimg.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+
+  tag-stuff:
+    - include: tag-id-attribute
+    - include: tag-class-attribute
+    - include: tag-generic-attribute
+

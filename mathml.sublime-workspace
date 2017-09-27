@@ -1,0 +1,754 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"avatar",
+				"avatar_file_type"
+			],
+			[
+				"avat",
+				"avatar_file_type"
+			],
+			[
+				"pa",
+				"passwd-confirm"
+			],
+			[
+				"try",
+				"try\tTry/Except"
+			],
+			[
+				"aud",
+				"audio_data"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "## SYNTAX TEST \"Packages/HTML/HTML.sublime-syntax\"\n<?xml version=\"1.0\" encoding=\"utf-8\"?>\n## <- meta.tag.preprocessor punctuation.definition.tag.begin\n##^^^entity.name.tag.xml\n##                                   ^ punctuation.definition.tag.end\n<!DOCTYPE html>\n<html>\n    <head>\n        <title>Test HTML</title>\n        <script type=\"text/javascript\"> <!--\n        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.tag.script.begin.html\n        ## ^ entity.name.tag.script - source.js.embedded.html\n        ##            ^ string.quoted.double.html - source.js.embedded.html\n        ##                              ^^^^ comment.block.html punctuation.definition.comment.html\n            var foo = 100;\n            var baz = function() {\n                ## <- entity.name.function.js\n            }\n\n            (a --> b);\n            ## ^^^ source.js.embedded.html meta.group.js keyword.operator\n        --> </script>\n        ## <- comment.block.html punctuation.definition.comment.html\n        ##    ^^^^^^ entity.name.tag.script.html\n        ##  ^^^^^^^^^ meta.tag.script.end.html - source.js.embedded.html\n        ##           ^ - meta.tag\n        <style type=\"text/css\">\n        ## ^^^^^^^^^^^^^^^^^^^^ meta.tag.style.begin.html\n        ## ^ entity.name.tag.style.html\n        ## ^^^^^^^^^^^^^^^^^^^^ - source.css.embedded.html\n        ##      ^ entity.other.attribute-name\n        ##                     ^ - meta.tag\n            h2 {\n            ## <- entity.name.tag.css\n                font-family: \"Arial\";\n                ##             ^ string.quoted.double.css\n            }\n        </style>\n        ##^^^^^ entity.name.tag.style.html\n        ##<- meta.tag.style.end.html - source.css.embedded.html\n        ##^^^^^^ meta.tag.style.end.html - source.css.embedded.html\n        ##      ^ - meta.tag\n        <style />\n        ##       ^ - source.css.embedded.html\n        ## ^ meta.tag.inline.any.html entity.name.tag.inline.any.html\n        <script />\n        ##        ^ - source.js.embedded.html\n        ## ^ meta.tag.inline.any.html entity.name.tag.inline.any.html\n    </head>\n    <body>\n        <!-- Comment -->\n        ## ^ comment.block.html\n\n        <div title=description></div>\n        ##  ^ - meta.attribute-with-value\n        ##   ^^^^^ entity.other.attribute-name\n        ##   ^^^^^^^^^^^^^^^^^ meta.attribute-with-value\n        ##         ^^^^^^^^^^^ string.unquoted\n\n<div\ntitle=\"description\"></div>\n## <- entity.other.attribute-name\n\n<div title=\"description\"\nclass=\"foo\"></div>\n## <- entity.other.attribute-name.class\n\n        <div title='description'></div>\n        ##  ^ - meta.attribute-with-value\n        ##   ^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value\n        ##   ^^^^^ entity.other.attribute-name\n        ##         ^^^^^^^^^^^^^ string.quoted.single\n        ##         ^ punctuation.definition.string.begin\n        ##                     ^ punctuation.definition.string.end\n\n        <div title=\"description\"></div>\n        ##  ^ - meta.attribute-with-value\n        ##   ^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value\n        ##   ^^^^^ entity.other.attribute-name\n        ##         ^^^^^^^^^^^^^ string.quoted.double\n        ##         ^ punctuation.definition.string.begin\n        ##                     ^ punctuation.definition.string.end\n\n        <div id=MyId></div>\n        ##  ^ - meta.attribute-with-value.id\n        ##   ^^ entity.other.attribute-name.id\n        ##   ^^^^^^^ meta.attribute-with-value.id\n        ##      ^^^^ string.unquoted meta.toc-list.id\n\n        <div id='MyId2'></div>\n        ##  ^ - meta.attribute-with-value.id\n        ##   ^^^^^^^^^^ meta.attribute-with-value.id\n        ##   ^^ entity.other.attribute-name.id\n        ##      ^^^^^^^ string.quoted.single\n        ##      ^ punctuation.definition.string.begin - meta.toc-list.id\n        ##       ^^^^^ meta.toc-list.id\n        ##            ^ punctuation.definition.string.end - meta.toc-list.id\n\n        <div id=\"ElementID\"></div>\n        ##  ^ - meta.attribute-with-value.id\n        ##   ^^^^^^^^^^ meta.attribute-with-value.id\n        ##   ^^ entity.other.attribute-name.id\n        ##      ^^^^^^^^^^^ string.quoted.double\n        ##      ^ punctuation.definition.string.begin - meta.toc-list.id\n        ##       ^^^^^^^^^ meta.toc-list.id\n        ##                ^ punctuation.definition.string.end - meta.toc-list.id\n\n        <div class=element-class></div>\n        ##  ^ - meta.attribute-with-value.class\n        ##   ^^^^^ entity.other.attribute-name.class\n        ##   ^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.class\n        ##         ^^^^^^^^^^^^^ string.unquoted meta.class-name\n\n        <div class='element-class'></div>\n        ##  ^ - meta.attribute-with-value.class\n        ##   ^^^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.class\n        ##   ^^^^^ entity.other.attribute-name.class\n        ##         ^^^^^^^^^^^^^^^ string.quoted.single\n        ##         ^ punctuation.definition.string.begin - meta.class-name\n        ##          ^^^^^^^^^^^^^ meta.class-name\n        ##                       ^ punctuation.definition.string.end - meta.class-name\n\n        <div class=\"element-class\"></div>\n        ##  ^ - meta.attribute-with-value.class\n        ##   ^^^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.class\n        ##   ^^^^^ entity.other.attribute-name.class\n        ##         ^^^^^^^^^^^^^^^ string.quoted.double\n        ##         ^ punctuation.definition.string.begin - meta.class-name\n        ##          ^^^^^^^^^^^^^ meta.class-name\n        ##                       ^ punctuation.definition.string.end - meta.class-name\n\n        <div style=\"width: 100%\"></div>\n        ##  ^ - meta.attribute-with-value.style\n        ##   ^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.style\n        ##   ^^^^^ meta.attribute-with-value.style.html entity.other.attribute-name.style.html\n        ##         ^ punctuation.definition.string.begin.html - source.css\n        ##          ^^^^^^^^^^^ source.css\n        ##                     ^ punctuation.definition.string.end.html - source.css\n        ##          ^^^^^ meta.property-name.css support.type.property-name.css\n        ##                 ^^^ meta.property-value.css constant.numeric.css\n        \n        <div style='width: 100%;'></div>\n        ##  ^ - meta.attribute-with-value.style\n        ##   ^^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.style\n        ##   ^^^^^ meta.attribute-with-value.style.html entity.other.attribute-name.style.html\n        ##         ^ punctuation.definition.string.begin.html - source.css\n        ##                      ^ punctuation.definition.string.end.html - source.css\n        ##          ^^^^^^^^^^^^ source.css\n        ##          ^^^^^ meta.property-name.css support.type.property-name.css\n        ##                 ^^^ meta.property-value.css constant.numeric.css\n\n        <tag attr otherattr attr-with-dashes attr_with_underscores attr.with.dot attr.with.dot.value=\"val\"></tag>\n        ##   ^ entity.other.attribute-name.html\n        ##        ^ entity.other.attribute-name.html\n        ##                  ^ entity.other.attribute-name.html\n        ##                                   ^ entity.other.attribute-name.html\n        ##                                                         ^^^^^^^^^^^^^ entity.other.attribute-name.html\n        ##                                                                       ^^^^^^^^^^^^^^^^^^^ entity.other.attribute-name.html\n\n        <a disabled onclick=\"setTimeout(function(){}, 100)\">Test</a>\n        ##         ^ - meta.attribute-with-value.event\n        ##          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.attribute-with-value.event\n        ##                  ^ - source.js\n        ##                                                ^ - source.js\n        ##                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.js\n        ##                   ^ meta.function-call.js support.function.js\n        ## ^^^^^^^^ entity.other.attribute-name\n\n        <article><span><othertag></othertag><othertag /></span></article>\n        ## ^^^^^ entity.name.tag.block.any.html\n        ##        ^^^^ entity.name.tag.inline.any.html\n        ##              ^^^^^^^^ entity.name.tag.other.html\n        ##                                            ^^ meta.tag.other.html punctuation.definition.tag.end.html\n\n        <form-custom-tag><div-custom-tag><span-custom-tag></span-custom-tag></div-custom-tag></form-custom-tag>\n        ##^^^^^^^^^^^^^^ entity.name.tag.custom.html\n        ##                ^^^^^^^^^^^^^^ entity.name.tag.custom.html\n        ##                                ^^^^^^^^^^^^^^^ entity.name.tag.custom.html\n        ##                                                  ^^^^^^^^^^^^^^^ entity.name.tag.custom.html\n        ##                                                                    ^^^^^^^^^^^^^^ entity.name.tag.custom.html\n        \n        <test-custom-tag/>\n        ##^^^^^^^^^^^^^^^^ meta.tag.custom.html\n        ##              ^^ punctuation.definition.tag.end.html\n\n        <INVALID-CUSTOM-TAG></INVALID-CUSTOM-TAG>\n        ## ^^^^^^^^^^^^^^^^ invalid.illegal.uppercase-custom-tag-name.html\n\n        <form name=\"formName\" type=\"post\">\n        ## ^ entity.name.tag.block.form.html\n        ## <- punctuation.definition.tag.begin.html\n        ##                               ^ punctuation.definition.tag.end.html\n            <label for=\"inputId\">\n            ## ^ entity.name.tag.inline.form.html\n            ##     ^ entity.other.attribute-name.html\n            ##        ^ punctuation.separator.key-value.html\n            <input id=\"inputId\" type=\"text\" value=\"value\">\n            ## ^ entity.name.tag.inline.form.html\n            ##                   ^ entity.other.attribute-name.html\n            <textarea name=\"texareaName\"></textarea>\n            ## ^ entity.name.tag.inline.form.html\n        </form>\n\n        <table border=\"0\" cellspacing=\"0\" cellpadding=\"2\" class=\"editor\">\n        ## ^ entity.name.tag.inline.table.html\n            <thead>\n            ## ^ entity.name.tag.inline.table.html\n                <tr>\n            ##   ^ entity.name.tag.inline.table.html\n                    <th> </th>\n                </tr>\n            </thead>\n            ## ^ entity.name.tag.inline.table.html\n            <tfoot>\n            ## ^ entity.name.tag.inline.table.html\n                <tr>\n                    <td> </td>\n                    ##^ entity.name.tag.inline.table.html\n                </tr>\n            </tfoot>\n            ## ^ entity.name.tag.inline.table.html\n            <tbody>\n                <tr>\n                    <td> </td>\n                </tr>\n            </tbody>\n        </table>\n\n        &amp;\n        ## <- constant.character.entity\n        &\n        ## <- invalid.illegal\n        <a href=\"http://google.com/?one=1&amp;two=2\"></a>\n        ##                               ^^^^^ constant.character.entity\n        <a href=\"http://google.com/?one=1&two=2\"></a>\n        ##                               ^ - constant.character.entity\n        ##                               ^ - invalid.illegal\n        \n        <hr/><hr />\n        ## ^^ meta.tag.block.any punctuation.definition.tag.end\n        ##    ^^ entity.name.tag.block.any\n        ##       ^^ punctuation.definition.tag.end\n    </body>\n    # ^^^^ entity.name.tag.structure\n</html>\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/syntax_test_html.html",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 11253,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<plist version=\"1.0\">\n<dict>\n\t<key>name</key>\n\t<string>Miscellaneous</string>\n\t<key>scope</key>\n\t<string>text.html</string>\n\t<key>settings</key>\n\t<dict>\n\t\t<key>decreaseIndentPattern</key>\n\t\t<string><![CDATA[(?x)\n\t\t\t^\\s*+                                                                                   # the beginning of the line followed by any amount of whitespace\n\t\t\t(\n\t\t\t    <\\?(php)?\\s+(else(if)?|end(if|for(each)?|while))\\b                                  # ending PHP control keywords\n\t\t\t|   [^<>]*+</(?!html)[A-Za-z0-9-]+\\b[^>]*>                                              # optionally, anything that's not an angle bracket, followed by any valid HTML close tag except \"html\"\n\t\t\t|   (<!\\[endif\\])?-->                                                                   # closing comment punctuation, optionally preceded by an end \"comment selector\"\n\t\t\t|   \\}                                                                                  # a closing curly brace\n\t\t\t)\n\t\t]]></string>\n\t\t<key>increaseIndentPattern</key>\n\t\t<string><![CDATA[(?x)\n\t\t\t^\\s*+                                                                                   # the beginning of the line followed by any amount of whitespace\n\t\t\t(\n\t\t\t    <\\?(php)?\\s*\\b                                                                      # an open PHP tag\n\t\t\t    (\n\t\t\t        (if|else|elseif)\\b.*:(?!.*?endif\\b)                                             # PHP if related statements not followed by an endif\n\t\t\t    |   (?<php_control_word>for|foreach|while)\\b.*:(?!.*?end\\k<php_control_word>\\b)     # PHP control keywords that don't end themselves on the same line\n\t\t\t    )\n\t\t\t|   \\{[^}\"']*$                                                                          # open curly braces that don't have close braces or string punctuation after them\n\t\t\t|   <!--(?!.*-->)                                                                       # comments that don't close themselves on the same line\n\t\t\t|   .*<(?!\\?|(?i:area|base|br|col|frame|hr|html|img|input|link|meta|param)\\b|[^>]*/>)   # skip self closing tags (tags that end with />, as well as known self closing tags)\n\t\t\t        (?<html_tag>[A-Za-z0-9-]+)(?=\\s|>)\\b[^>]*>(?!.*</\\k<html_tag>\\s*>)              # a valid non-self-closing HTML tag that doesn't close itself on the same line\n\t\t\t)\n\t\t]]></string>\n\t\t<key>bracketIndentNextLinePattern</key>\n\t\t<string><![CDATA[<!DOCTYPE(?!.*>)]]></string>\n\t</dict>\n</dict>\n</plist>\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Miscellaneous.tmPreferences",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 2483,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "import sublime, sublime_plugin\nimport re\n\n\ndef match(rex, str):\n    m = rex.match(str)\n    if m:\n        return m.group(0)\n    else:\n        return None\n\ndef make_completion(tag):\n    # make it look like\n    # (\"table\\tTag\", \"table>$1</table>\"),\n    return (tag + '\\tTag', tag + '>$0</' + tag + '>')\n\ndef get_tag_to_attributes():\n    \"\"\"\n    Returns a dictionary with attributes accociated to tags\n    This assumes that all tags can have global attributes as per MDN:\n    https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes\n    \"\"\"\n\n    # Map tags to specific attributes applicable for that tag\n    tag_dict = {\n        'a' : ['charset', 'coords', 'download', 'href', 'hreflang', 'media', 'name', 'ping', 'rel', 'rev', 'shape', 'target', 'type'],\n        'abbr' : ['title'],\n        'address' : [],\n        'applet' : ['align', 'alt', 'archive', 'code', 'codebase', 'height', 'hspace', 'name', 'object', 'vspace', 'width'],\n        'area' : ['alt', 'coords', 'download', 'href', 'hreflang', 'media', 'nohref', 'rel', 'shape', 'target'],\n        'article' : [],\n        'aside' : [],\n        'audio' : ['autoplay', 'buffered', 'controls', 'loop', 'muted', 'played', 'preload', 'src', 'volume'],\n        'b' : [],\n        'base' : ['href', 'target'],\n        'basefont' : ['color', 'face', 'size'],\n        'bdi' : [],\n        'bdo' : [],\n        'blockquote' : ['cite'],\n        'body' : ['alink', 'background', 'bgcolor', 'link', 'onafterprint', 'onbeforeprint', 'onbeforeunload', 'onhashchange', 'onmessage', 'onoffline', 'ononline', 'onpopstate', 'onredo', 'onstorage', 'onundo', 'onunload', 'text', 'vlink'],\n        'br' : ['clear'],\n        'button' : ['autofocus', 'disabled', 'form', 'formaction', 'formenctype', 'formmethod', 'formnovalidate', 'formtarget', 'name', 'type', 'value'],\n        'canvas' : ['height', 'width'],\n        'caption' : ['align'],\n        'cite' : [],\n        'code' : [],\n        'col' : ['align', 'char', 'charoff', 'span', 'valign', 'width'],\n        'colgroup' : ['align', 'char', 'charoff', 'span', 'valign', 'width'],\n        'content' : ['select'],\n        'data' : ['value'],\n        'datalist' : [],\n        'dd' : [],\n        'del' : ['cite', 'datetime'],\n        'details' : ['open'],\n        'dfn' : [],\n        'dir' : ['compact'],\n        'div' : ['align'],\n        'dl' : ['compact'],\n        'dt' : [],\n        'element' : [],\n        'em' : [],\n        'embed' : ['height', 'src', 'type', 'width'],\n        'fieldset' : ['disabled', 'form', 'name'],\n        'figcaption' : [],\n        'figure' : [],\n        'font' : ['color', 'face', 'size'],\n        'footer' : [],\n        'form' : ['accept-charset', 'accept', 'action', 'autocomplete', 'enctype', 'method', 'name', 'novalidate', 'target'],\n        'frame' : ['frameborder', 'longdesc', 'marginheight', 'marginwidth', 'name', 'noresize', 'scrolling', 'src'],\n        'frameset' : ['cols', 'onunload', 'rows'],\n        'h1' : ['align'],\n        'h2' : ['align'],\n        'h3' : ['align'],\n        'h4' : ['align'],\n        'h5' : ['align'],\n        'h6' : ['align'],\n        'head' : ['profile'],\n        'header' : [],\n        'hr' : ['align', 'noshade', 'size', 'width'],\n        'html' : ['manifest', 'version', 'xmlns'],\n        'i' : [],\n        'iframe' : ['align', 'frameborder', 'height', 'longdesc', 'marginheight', 'marginwidth', 'name', 'sandbox', 'scrolling', 'seamless', 'src', 'srcdoc', 'width'],\n        'img' : ['align', 'alt', 'border', 'crossorigin', 'height', 'hspace', 'ismap', 'longdesc', 'name', 'sizes', 'src', 'srcset', 'usemap', 'vspace', 'width'],\n        'input' : ['accept', 'align', 'alt', 'autocomplete', 'autofocus', 'autosave', 'checked', 'disabled', 'form', 'formaction', 'formenctype', 'formmethod', 'formnovalidate', 'formtarget', 'height', 'inputmode', 'ismap', 'list', 'max', 'maxlength', 'min', 'minlength', 'multiple', 'name', 'pattern', 'placeholder', 'readonly', 'required', 'selectionDirection', 'size', 'spellcheck', 'src', 'step', 'tabindex', 'type', 'usemap', 'value', 'width'],\n        'ins' : ['cite', 'datetime'],\n        'isindex' : ['prompt'],\n        'kbd' : [],\n        'keygen' : ['autofocus', 'challenge', 'disabled', 'form', 'keytype', 'name'],\n        'label' : ['for', 'form'],\n        'legend' : [],\n        'li' : ['type', 'value'],\n        'link' : ['charset', 'crossorigin', 'href', 'hreflang', 'media', 'rel', 'rev', 'sizes', 'target', 'type'],\n        'main' : [],\n        'map' : ['name'],\n        'mark' : [],\n        'menu' : ['compact'],\n        'meta' : ['charset', 'content', 'http-equiv', 'name', 'scheme'],\n        'meter' : ['value', 'min', 'max', 'low', 'high', 'optimum', 'form'],\n        'nav' : [],\n        'noframes' : [],\n        'noscript' : [],\n        'object' : ['align', 'archive', 'border', 'classid', 'codebase', 'codetype', 'data', 'declare', 'form', 'height', 'hspace', 'name', 'standby', 'type', 'typemustmatch', 'usemap', 'vspace', 'width'],\n        'ol' : ['compact', 'reversed', 'start', 'type'],\n        'optgroup' : ['disabled', 'label'],\n        'option' : ['disabled', 'label', 'selected', 'value'],\n        'output' : ['for', 'form', 'name'],\n        'p' : ['align'],\n        'param' : ['name', 'type', 'value', 'valuetype'],\n        'picture' : [],\n        'pre' : ['width'],\n        'progress' : ['max', 'value'],\n        'q' : ['cite'],\n        'rp' : [],\n        'rt' : [],\n        'rtc' : [],\n        's' : [],\n        'samp' : [],\n        'script' : ['async', 'charset', 'defer', 'language', 'src', 'type'],\n        'section' : [],\n        'select' : ['autofocus', 'disabled', 'form', 'multiple', 'name', 'required', 'size'],\n        'shadow' : [],\n        'small' : [],\n        'source' : ['src', 'type'],\n        'span' : [],\n        'strong' : [],\n        'style' : ['disabled', 'media', 'scoped', 'title', 'type'],\n        'sub' : [],\n        'summary': [],\n        'sup' : [],\n        'table' : ['align', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'frame', 'rules', 'summary', 'width'],\n        'tbody' : ['align', 'char', 'charoff', 'valign'],\n        'td' : ['abbr', 'align', 'axis', 'bgcolor', 'char', 'charoff', 'colspan', 'headers', 'height', 'nowrap', 'rowspan', 'scope', 'valign', 'width'],\n        'template' : ['content'],\n        'textarea' : ['autocomplete', 'autofocus', 'cols', 'disabled', 'form', 'maxlength', 'minlength', 'name', 'placeholder', 'readonly', 'required', 'rows', 'selectionDirection', 'selectionEnd', 'selectionStart', 'spellcheck', 'wrap'],\n        'tfoot' : ['align', 'char', 'charoff', 'valign'],\n        'th' : ['abbr', 'align', 'axis', 'bgcolor', 'char', 'charoff', 'colspan', 'headers', 'height', 'nowrap', 'rowspan', 'scope', 'valign', 'width'],\n        'thead' : ['align', 'char', 'charoff', 'valign'],\n        'time' : ['datetime'],\n        'title' : [],\n        'tr' : ['align', 'bgcolor', 'char', 'charoff', 'valign'],\n        'track' : ['default', 'kind', 'label', 'src', 'srclang'],\n        'u' : [],\n        'ul' : ['compact', 'type'],\n        'var' : [],\n        'video' : ['autoplay', 'autobuffer', 'buffered', 'controls', 'crossorigin', 'height', 'loop', 'muted', 'played', 'preload', 'poster', 'src', 'width'],\n        'wbr' : []\n    }\n\n    # Assume that global attributes are common to all HTML elements\n    global_attributes = [\n        'accesskey', 'class', 'contenteditable', 'contextmenu', 'dir',\n        'hidden', 'id', 'lang', 'style', 'tabindex', 'title', 'translate'\n    ]\n\n    # Extend `global_attributes` by the event handler attributes\n    global_attributes.extend([\n        'onabort', 'onautocomplete', 'onautocompleteerror', 'onblur',\n        'oncancel', 'oncanplay', 'oncanplaythrough', 'onchange', 'onclick',\n        'onclose', 'oncontextmenu', 'oncuechange', 'ondblclick', 'ondrag',\n        'ondragend', 'ondragenter', 'ondragexit', 'ondragleave', 'ondragover',\n        'ondragstart', 'ondrop', 'ondurationchange', 'onemptied', 'onended',\n        'onerror', 'onfocus', 'oninput', 'oninvalid', 'onkeydown',\n        'onkeypress', 'onkeyup', 'onload', 'onloadeddata', 'onloadedmetadata',\n        'onloadstart', 'onmousedown', 'onmouseenter', 'onmouseleave',\n        'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',\n        'onmousewheel', 'onpause', 'onplay', 'onplaying', 'onprogress',\n        'onratechange', 'onreset', 'onresize', 'onscroll', 'onseeked',\n        'onseeking', 'onselect', 'onshow', 'onsort', 'onstalled', 'onsubmit',\n        'onsuspend', 'ontimeupdate', 'ontoggle', 'onvolumechange', 'onwaiting'\n    ])\n\n    for attributes in tag_dict.values():\n        attributes.extend(global_attributes)\n\n    # Remove `dir` attribute from `bdi` key, because it is *not* inherited\n    # from the global attributes\n    if 'bdi' in tag_dict:\n        tag_dict['bdi'] = [attr for attr in tag_dict['bdi'] if attr != 'dir']\n\n    return tag_dict\n\n\nclass HtmlTagCompletions(sublime_plugin.EventListener):\n    \"\"\"\n    Provide tag completions for HTML\n    It matches just after typing the first letter of a tag name\n    \"\"\"\n    def __init__(self):\n        completion_list = self.default_completion_list()\n        self.prefix_completion_dict = {}\n        # construct a dictionary where the key is first character of\n        # the completion list to the completion\n        for s in completion_list:\n            prefix = s[0][0]\n            self.prefix_completion_dict.setdefault(prefix, []).append(s)\n\n        # construct a dictionary from (tag, attribute[0]) -> [attribute]\n        self.tag_to_attributes = get_tag_to_attributes()\n\n    def on_query_completions(self, view, prefix, locations):\n        # Only trigger within HTML\n        if not view.match_selector(locations[0],\n           \"text.html - source - string.quoted - meta.tag.style.end punctuation.definition.tag.begin\"):\n            return []\n\n        # check if we are inside a tag\n        is_inside_tag = view.match_selector(locations[0],\n                \"text.html meta.tag - text.html punctuation.definition.tag.begin\")\n\n        return self.get_completions(view, prefix, locations, is_inside_tag)\n\n    def get_completions(self, view, prefix, locations, is_inside_tag):\n        # see if it is in tag.attr or tag#attr format\n        if not is_inside_tag:\n            tag_attr_expr = self.expand_tag_attributes(view, locations)\n            if tag_attr_expr != []:\n                return (tag_attr_expr, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n\n        pt = locations[0] - len(prefix) - 1\n        ch = view.substr(sublime.Region(pt, pt + 1))\n\n        # print('prefix:', prefix)\n        # print('location0:', locations[0])\n        # print('substr:', view.substr(sublime.Region(locations[0], locations[0] + 3)), '!end!')\n        # print('is_inside_tag', is_inside_tag)\n        # print('ch:', ch)\n\n        completion_list = []\n        if is_inside_tag and ch != '<':\n            if ch in [' ', '\\t', '\\n']:\n                # maybe trying to type an attribute\n                completion_list = self.get_attribute_completions(view, locations[0], prefix)\n            # only ever trigger completion inside a tag if the previous character is a <\n            # this is needed to stop completion from happening when typing attributes\n            return (completion_list, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n\n        if prefix == '':\n            # need completion list to match\n            return ([], sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n\n        # match completion list using prefix\n        completion_list = self.prefix_completion_dict.get(prefix[0], [])\n\n        # if the opening < is not here insert that\n        if ch != '<':\n            completion_list = [(pair[0], '<' + pair[1]) for pair in completion_list]\n\n        flags = 0\n        if is_inside_tag:\n            flags = sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS\n\n        return (completion_list, flags)\n\n    def default_completion_list(self):\n        \"\"\"\n        Generate a default completion list for HTML\n        \"\"\"\n        default_list = []\n        normal_tags = ([\n            'abbr', 'acronym', 'address', 'applet', 'article', 'aside',\n            'audio', 'b', 'basefont', 'bdi', 'bdo', 'big', 'blockquote',\n            'body', 'button', 'center', 'canvas', 'caption', 'cdata',\n            'cite', 'colgroup', 'code', 'content', 'data', 'datalist',\n            'dir', 'div', 'dd', 'del', 'details', 'dfn', 'dl', 'dt', 'element',\n            'em', 'embed', 'fieldset', 'figure', 'figcaption', 'font', 'footer',\n            'form', 'frame', 'frameset', 'head', 'header', 'h1', 'h2', 'h3',\n            'h4', 'h5', 'h6', 'i', 'ins', 'isindex', 'kbd', 'keygen',\n            'li', 'label', 'legend', 'main', 'map', 'mark', 'meter',\n            'nav', 'noframes', 'noscript', 'object', 'ol', 'optgroup',\n            'option', 'output', 'p', 'picture', 'pre', 'q', 'rp',\n            'rt', 'rtc', 'ruby', 's', 'samp', 'section', 'select', 'shadow',\n            'small', 'span', 'strong', 'sub', 'summary', 'sup',\n            'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th',\n            'thead', 'time', 'title', 'tr', 'tt', 'u', 'ul', 'var',\n            'video'\n        ])\n\n        for tag in normal_tags:\n            default_list.append(make_completion(tag))\n            default_list.append(make_completion(tag.upper()))\n\n        default_list += ([\n            ('a\\tTag', 'a href=\\\"$1\\\">$0</a>'),\n            ('area\\tTag', 'area shape=\\\"$1\\\" coords=\\\"$2\\\" href=\\\"$3\\\">'),\n            ('audio\\tTag', 'audio src=\\\"$1\\\">$0</audio>'),\n            ('base\\tTag', 'base href=\\\"$1\\\">'),\n            ('br\\tTag', 'br>'),\n            ('col\\tTag', 'col>'),\n            ('hr\\tTag', 'hr>'),\n            ('iframe\\tTag', 'iframe src=\\\"$1\\\">$0</iframe>'),\n            ('input\\tTag', 'input type=\\\"$1\\\" name=\\\"$2\\\">'),\n            ('img\\tTag', 'img src=\\\"$1\\\">'),\n            ('link\\tTag', 'link rel=\\\"stylesheet\\\" type=\\\"text/css\\\" href=\\\"$1\\\">'),\n            ('meta\\tTag', 'meta ${1:charset=\\\"utf-8\\\"}>'),\n            ('param\\tTag', 'param name=\\\"$1\\\" value=\\\"$2\\\">'),\n            ('progress\\tTag', 'progress value=\\\"$1\\\" max=\\\"$2\\\">'),\n            ('script\\tTag', 'script${2: type=\\\"${1:text/javascript}\\\"}>$0</script>'),\n            ('source\\tTag', 'source src=\\\"$1\\\" type=\\\"$2\\\">'),\n            ('style\\tTag', 'style type=\\\"${1:text/css}\\\">$0</style>'),\n            ('track\\tTag', 'track kind=\\\"$1\\\" src=\\\"$2\\\">'),\n            ('wbr\\tTag', 'wbr>'),\n            ('video\\tTag', 'video src=\\\"$1\\\">$0</video>')\n        ])\n\n        return default_list\n\n    # This responds to on_query_completions, but conceptually it's expanding\n    # expressions, rather than completing words.\n    #\n    # It expands these simple expressions:\n    # tag.class\n    # tag#id\n    def expand_tag_attributes(self, view, locations):\n        # Get the contents of each line, from the beginning of the line to\n        # each point\n        lines = [view.substr(sublime.Region(view.line(l).a, l))\n            for l in locations]\n\n        # Reverse the contents of each line, to simulate having the regex\n        # match backwards\n        lines = [l[::-1] for l in lines]\n\n        # Check the first location looks like an expression\n        rex = re.compile(\"([\\w-]+)([.#])(\\w+)\")\n        expr = match(rex, lines[0])\n        if not expr:\n            return []\n\n        # Ensure that all other lines have identical expressions\n        for i in range(1, len(lines)):\n            ex = match(rex, lines[i])\n            if ex != expr:\n                return []\n\n        # Return the completions\n        arg, op, tag = rex.match(expr).groups()\n\n        arg = arg[::-1]\n        tag = tag[::-1]\n        expr = expr[::-1]\n\n        if op == '.':\n            snippet = '<{0} class=\\\"{1}\\\">$1</{0}>$0'.format(tag, arg)\n        else:\n            snippet = '<{0} id=\\\"{1}\\\">$1</{0}>$0'.format(tag, arg)\n\n        return [(expr, snippet)]\n\n    def get_attribute_completions(self, view, pt, prefix):\n        SEARCH_LIMIT = 500\n        search_start = max(0, pt - SEARCH_LIMIT - len(prefix))\n        line = view.substr(sublime.Region(search_start, pt + SEARCH_LIMIT))\n\n        line_head = line[0:pt - search_start]\n        line_tail = line[pt - search_start:]\n\n        # find the tag from end of line_head\n        i = len(line_head) - 1\n        tag = None\n        space_index = len(line_head)\n        while i >= 0:\n            c = line_head[i]\n            if c == '<':\n                # found the open tag\n                tag = line_head[i + 1:space_index]\n                break\n            elif c == ' ':\n                space_index = i\n            i -= 1\n\n        # check that this tag looks valid\n        if not tag or not tag.isalnum():\n            return []\n\n        # determines whether we need to close the tag\n        # default to closing the tag\n        suffix = '>'\n\n        for c in line_tail:\n            if c == '>':\n                # found end tag\n                suffix = ''\n                break\n            elif c == '<':\n                # found another open tag, need to close this one\n                break\n\n        if suffix == '' and not line_tail.startswith(' ') and not line_tail.startswith('>'):\n            # add a space if not there\n            suffix = ' '\n\n        # got the tag, now find all attributes that match\n        attributes = self.tag_to_attributes.get(tag, [])\n        # (\"class\\tAttr\", \"class=\"$1\">\"),\n        attri_completions = [(a + '\\tAttr', a + '=\"$1\"' + suffix) for a in attributes]\n        return attri_completions\n\n\n# unit testing\n# to run it in sublime text:\n# import HTML.html_completions\n# HTML.html_completions.Unittest.run()\n\nimport unittest\n\nclass Unittest(unittest.TestCase):\n\n    class Sublime:\n        INHIBIT_WORD_COMPLETIONS = 1\n        INHIBIT_EXPLICIT_COMPLETIONS = 2\n\n    # this view contains a hard coded one line super simple HTML fragment\n    class View:\n        def __init__(self):\n            self.buf = '<tr><td class=\"a\">td.class</td></tr>'\n\n        def line(self, pt):\n            # only ever 1 line\n            return sublime.Region(0, len(self.buf))\n\n        def substr(self, region):\n            return self.buf[region.a : region.b]\n\n    def run():\n        # redefine the modules to use the mock version\n        global sublime\n\n        sublime_module = sublime\n        # use the normal region\n        Unittest.Sublime.Region = sublime.Region\n        sublime = Unittest.Sublime\n\n        test = Unittest()\n        test.test_simple_completion()\n        test.test_inside_tag_completion()\n        test.test_inside_tag_no_completion()\n        test.test_expand_tag_attributes()\n\n        # set it back after testing\n        sublime = sublime_module\n\n    # def get_completions(self, view, prefix, locations, is_inside_tag):\n    def test_simple_completion(self):\n        # <tr><td class=\"a\">td.class</td></tr>\n        view = Unittest.View()\n        completor = HtmlTagCompletions()\n\n        # simulate typing 'tab' at the start of the line, it is outside a tag\n        completion_list, flags = completor.get_completions(view, 'tab', [0], False)\n\n        # should give a bunch of tags that starts with t\n        self.assertEqual(completion_list[0], ('table\\tTag', '<table>$0</table>'))\n        self.assertEqual(completion_list[1], ('tbody\\tTag', '<tbody>$0</tbody>'))\n        # don't suppress word based completion\n        self.assertEqual(flags, 0)\n\n    def test_inside_tag_completion(self):\n        # <tr><td class=\"a\">td.class</td></tr>\n        view = Unittest.View()\n        completor = HtmlTagCompletions()\n\n        # simulate typing 'h' after <tr><, i.e. <tr><h\n        completion_list, flags = completor.get_completions(view, 'h', [6], True)\n\n        # should give a bunch of tags that starts with h, and without <\n        self.assertEqual(completion_list[0], ('head\\tTag', 'head>$0</head>'))\n        self.assertEqual(completion_list[1], ('header\\tTag', 'header>$0</header>'))\n        self.assertEqual(completion_list[2], ('h1\\tTag', 'h1>$0</h1>'))\n        # suppress word based completion\n        self.assertEqual(flags, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n\n        # simulate typing 'he' after <tr><, i.e. <tr><he\n        completion_list, flags = completor.get_completions(view, 'he', [7], True)\n\n        # should give a bunch of tags that starts with h, and without < (it filters only on the first letter of the prefix)\n        self.assertEqual(completion_list[0], ('head\\tTag', 'head>$0</head>'))\n        self.assertEqual(completion_list[1], ('header\\tTag', 'header>$0</header>'))\n        self.assertEqual(completion_list[2], ('h1\\tTag', 'h1>$0</h1>'))\n        # suppress word based completion\n        self.assertEqual(flags, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n\n    def test_inside_tag_no_completion(self):\n        # <tr><td class=\"a\">td.class</td></tr>\n        view = Unittest.View()\n        completor = HtmlTagCompletions()\n\n        # simulate typing 'h' after <tr><td , i.e. <tr><td h\n        completion_list, flags = completor.get_completions(view, 'h', [8], True)\n\n        # should give nothing, but disable word based completions, since it is inside a tag\n        self.assertEqual(completion_list, [])\n        self.assertEqual(flags, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n\n    def test_expand_tag_attributes(self):\n        # <tr><td class=\"a\">td.class</td></tr>\n        view = Unittest.View()\n        completor = HtmlTagCompletions()\n\n        # simulate typing tab after td.class\n        completion_list, flags = completor.get_completions(view, '', [26], False)\n\n        # should give just one completion, and suppress word based completion\n        self.assertEqual(completion_list, [('td.class', '<td class=\"class\">$1</td>$0')])\n        self.assertEqual(flags, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/html_completions.py",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 21913,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "<snippet>\n\t<content><![CDATA[<!DOCTYPE html>\n<html>\n<head>\n\t<title>$1</title>\n</head>\n<body>\n$0\n</body>\n</html>]]></content>\n\t<tabTrigger>html</tabTrigger>\n\t<scope>text.html &amp; (- meta.tag | punctuation.definition.tag.begin)</scope>\n</snippet>\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Snippets/html.sublime-snippet",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 247,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "<snippet>\n\t<description>html</description>\n\t<content><![CDATA[!DOCTYPE html>\n<html>\n<head>\n\t<title>$1</title>\n</head>\n<body>\n$0\n</body>\n</html>]]></content>\n\t<tabTrigger>html</tabTrigger>\n\t<scope>text.html entity.name.tag</scope>\n</snippet>\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Snippets/html (begin tag).sublime-snippet",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 241,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "import sublime\nimport sublime_plugin\n\nfrom html.entities import codepoint2name as cp2n\n\nclass EncodeHtmlEntities(sublime_plugin.TextCommand):\n    def run(self, edit, **args):\n        view = self.view\n\n        for sel in view.sel():\n            buf = []\n\n            for pt in range(sel.begin(), sel.end()):\n                ch = view.substr(pt)\n                ch_ord = ord(ch)\n\n                if (not view.match_selector(pt, ('meta.tag - string, constant.character.entity'))\n                        and ch_ord in cp2n\n                        and not (ch in ('\"', \"'\")\n                        and view.match_selector(pt, 'string'))):\n                    ch = '&%s;' % cp2n[ch_ord]\n\n                buf.append(ch)\n\n            view.replace(edit, sel, ''.join(buf))\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/encode_html_entities.py",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 764,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<plist version=\"1.0\">\n<dict>\n\t<key>name</key>\n\t<string>Comments</string>\n\t<key>scope</key>\n\t<string>text.html</string>\n\t<key>settings</key>\n\t<dict>\n\t\t<key>shellVariables</key>\n\t\t<array>\n\t\t\t<dict>\n\t\t\t\t<key>name</key>\n\t\t\t\t<string>TM_COMMENT_START</string>\n\t\t\t\t<key>value</key>\n\t\t\t\t<string><![CDATA[<!-- ]]></string>\n\t\t\t</dict>\n\t\t\t<dict>\n\t\t\t\t<key>name</key>\n\t\t\t\t<string>TM_COMMENT_END</string>\n\t\t\t\t<key>value</key>\n\t\t\t\t<string><![CDATA[ -->]]></string>\n\t\t\t</dict>\n\t\t</array>\n\t</dict>\n</dict>\n</plist>\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Comments.tmPreferences",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 537,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "%YAML 1.2\n---\nname: HTML\nfile_extensions:\n  - html\n  - htm\n  - shtml\n  - xhtml\n  - inc\n  - tmpl\n  - tpl\nfirst_line_match: (?i)<(!DOCTYPE\\s*)?html\nscope: text.html.basic\ncontexts:\n  main:\n    - match: (<\\?)(xml)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.xml.html\n      push:\n        - meta_scope: meta.tag.preprocessor.xml.html\n        - match: '\\?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-generic-attribute\n        - include: string-double-quoted\n        - include: string-single-quoted\n    - match: <!--\n      scope: punctuation.definition.comment.html\n      push:\n        - meta_scope: comment.block.html\n        - match: '--\\s*>'\n          pop: true\n        - match: \"--\"\n          scope: invalid.illegal.bad-comments-or-CDATA.html\n    - match: <!\n      scope: punctuation.definition.tag.html\n      push:\n        - meta_scope: meta.tag.sgml.html\n        - match: \">\"\n          scope: punctuation.definition.tag.html\n          pop: true\n        - match: (?i:DOCTYPE)\n          scope: entity.name.tag.doctype.html\n          push:\n            - meta_scope: meta.tag.sgml.doctype.html\n            - match: (?=>)\n              pop: true\n            - match: '\"[^\">]*\"'\n              scope: string.quoted.double.doctype.identifiers-and-DTDs.html\n        - match: '\\[CDATA\\['\n          push:\n            - meta_scope: constant.other.inline-data.html\n            - match: \"]](?=>)\"\n              pop: true\n        - match: (\\s*)(?!--|>)\\S(\\s*)\n          scope: invalid.illegal.bad-comments-or-CDATA.html\n    - match: (</?)([a-z_][a-z0-9:_]*-[a-z0-9:_-]+)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.custom.html\n      push:\n        - meta_scope: meta.tag.custom.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: '(?:^\\s+)?(<)((?i:style))\\b(?![^>]*/>)'\n      captures:\n        0: meta.tag.style.begin.html\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.style.html\n      push:\n        - match: (?i)(</)(style)(>)\n          captures:\n            0: meta.tag.style.end.html\n            1: punctuation.definition.tag.begin.html\n            2: entity.name.tag.style.html\n            3: punctuation.definition.tag.end.html\n          pop: true\n        - match: '>'\n          scope: meta.tag.style.begin.html punctuation.definition.tag.end.html\n          push:\n            - meta_content_scope: source.css.embedded.html\n            - include: 'scope:source.css'\n          with_prototype:\n            - match: (?i)(?=</style)\n              pop: true\n        - match: ''\n          push:\n            - meta_scope: meta.tag.style.begin.html\n            - match: '(?=>)'\n              pop: true\n            - include: tag-stuff\n    - match: '(<)((?i:script))\\b(?![^>]*/>)(?![^>]*(?i:type.?=.?text/((?!javascript).*)))'\n      captures:\n        0: meta.tag.script.begin.html\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.script.html\n      push:\n        - match: (?i)(-->)?\\s*(</)(script)(>)\n          captures:\n            0: meta.tag.script.end.html\n            1: comment.block.html punctuation.definition.comment.html\n            2: punctuation.definition.tag.begin.html\n            3: entity.name.tag.script.html\n            4: punctuation.definition.tag.end.html\n          pop: true\n        - match: '(>)\\s*(<!--)?'\n          captures:\n            1: meta.tag.script.begin.html punctuation.definition.tag.end.html\n            2: comment.block.html punctuation.definition.comment.html\n          push:\n            - meta_content_scope: source.js.embedded.html\n            - include: 'scope:source.js'\n          with_prototype:\n             - match: (?i)(?=(-->)?\\s*</script)\n               pop: true\n        - match: ''\n          push:\n            - meta_scope: meta.tag.script.begin.html\n            - match: '(?=>)'\n              pop: true\n            - include: tag-stuff\n    - match: (</?)((?i:body|head|html)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.structure.any.html\n      push:\n        - meta_scope: meta.tag.structure.any.html\n        - match: '>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:address|blockquote|dd|div|section|article|aside|header|footer|nav|menu|dl|dt|frame|frameset|h1|h2|h3|h4|h5|h6|iframe|noframes|object|ol|p|ul|applet|center|dir|pre)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.block.any.html\n      push:\n        - meta_scope: meta.tag.block.any.html\n        - match: '>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:hr)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.block.any.html\n      push:\n        - meta_scope: meta.tag.block.any.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:form|fieldset)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.block.form.html\n      push:\n        - meta_scope: meta.tag.block.form.html\n        - match: '>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:abbr|acronym|area|b|base|basefont|bdo|big|br|caption|cite|code|del|dfn|em|font|head|html|i|img|ins|isindex|kbd|li|link|map|meta|noscript|param|q|s|samp|script|small|span|strike|strong|style|sub|sup|title|tt|u|var)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.inline.any.html\n      push:\n        - meta_scope: meta.tag.inline.any.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:button|input|label|legend|optgroup|option|select|textarea)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.inline.form.html\n      push:\n        - meta_scope: meta.tag.inline.form.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:a)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.inline.a.html\n      push:\n        - meta_scope: meta.tag.inline.a.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)((?i:col|colgroup|table|tbody|td|tfoot|th|thead|tr)\\b)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.inline.table.html\n      push:\n        - meta_scope: meta.tag.inline.table.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: (</?)([A-Za-z0-9:_]+-[A-Za-z0-9:_-]+)\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: invalid.illegal.uppercase-custom-tag-name.html\n      push:\n        - meta_scope: meta.tag.custom.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - match: \"(</?)([a-zA-Z0-9:]+)\"\n      captures:\n        1: punctuation.definition.tag.begin.html\n        2: entity.name.tag.other.html\n      push:\n        - meta_scope: meta.tag.other.html\n        - match: '(?: ?/)?>'\n          scope: punctuation.definition.tag.end.html\n          pop: true\n        - include: tag-stuff\n    - include: entities\n    - match: <>\n      scope: invalid.illegal.incomplete.html\n  entities-common:\n    - match: \"(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)\"\n      scope: constant.character.entity.html\n      captures:\n        1: punctuation.definition.entity.html\n        3: punctuation.definition.entity.html\n  attribute-entities:\n    - include: entities-common\n  entities:\n    - include: entities-common\n    - match: \"&\"\n      scope: invalid.illegal.bad-ampersand.html\n  string-double-quoted:\n    - match: '\"'\n      scope: punctuation.definition.string.begin.html\n      push:\n        - meta_scope: string.quoted.double.html\n        - match: '\"'\n          scope: punctuation.definition.string.end.html\n          pop: true\n        - include: entities\n  string-single-quoted:\n    - match: \"'\"\n      scope: punctuation.definition.string.begin.html\n      push:\n        - meta_scope: string.quoted.single.html\n        - match: \"'\"\n          scope: punctuation.definition.string.end.html\n          pop: true\n        - include: entities\n\n  tag-generic-attribute:\n    - match: '(?:^|\\s+)(([a-zA-Z0-9:\\-_.]+)\\s*(=)\\s*)'\n      captures:\n        1: meta.attribute-with-value.html\n        2: entity.other.attribute-name.html\n        3: punctuation.separator.key-value.html\n      push:\n        - match: '\"'\n          scope: punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.html string.quoted.double.html\n            - match: '\"'\n              scope: punctuation.definition.string.end.html\n              pop: true\n            - include: attribute-entities\n        - match: \"'\"\n          scope: punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.html string.quoted.single.html\n            - match: \"'\"\n              scope: punctuation.definition.string.end.html\n              pop: true\n            - include: attribute-entities\n        - match: '(?:[^\\s<>/''\"]|/(?!>))+'\n          scope: meta.attribute-with-value.html string.unquoted.html\n        - match: ''\n          pop: true\n    - match: '\\s+([a-zA-Z0-9:\\-_.]+)'\n      captures:\n        1: entity.other.attribute-name.html\n\n  tag-class-attribute:\n    - match: '(?:^|\\s+)\\b((class)\\b\\s*(=)\\s*)'\n      captures:\n        1: meta.attribute-with-value.class.html\n        2: entity.other.attribute-name.class.html\n        3: punctuation.separator.key-value.html\n      push:\n        - match: '\"'\n          scope: punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.class.html string.quoted.double.html\n            - meta_content_scope: meta.class-name.html\n            - match: '\"'\n              scope: punctuation.definition.string.end.html\n              pop: true\n            - include: attribute-entities\n        - match: \"'\"\n          scope: punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.class.html string.quoted.single.html\n            - meta_content_scope: meta.class-name.html\n            - match: \"'\"\n              scope: punctuation.definition.string.end.html\n              pop: true\n            - include: attribute-entities\n        - match: '(?:[^\\s<>/''\"]|/(?!>))+'\n          scope: meta.attribute-with-value.class.html string.unquoted.html meta.class-name.html\n        - match: ''\n          pop: true\n\n  tag-id-attribute:\n    - match: '(?:^|\\s+)\\b((id)\\b\\s*(=)\\s*)'\n      captures:\n        1: meta.attribute-with-value.id.html\n        2: entity.other.attribute-name.id.html\n        3: punctuation.separator.key-value.html\n      push:\n        - match: '\"'\n          scope: punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.id.html string.quoted.double.html\n            - meta_content_scope: meta.toc-list.id.html\n            - match: '\"'\n              scope: punctuation.definition.string.end.html\n              pop: true\n            - include: attribute-entities\n        - match: \"'\"\n          scope: punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.id.html string.quoted.single.html\n            - meta_content_scope: meta.toc-list.id.html\n            - match: \"'\"\n              scope: punctuation.definition.string.end.html\n              pop: true\n            - include: attribute-entities\n        - match: '(?:[^\\s<>/''\"]|/(?!>))+'\n          scope: meta.attribute-with-value.id.html string.unquoted.html meta.toc-list.id.html\n        - match: ''\n          pop: true\n\n  tag-style-attribute:\n    - match: '(?:^|\\s+)\\b((style)\\b\\s*(=)\\s*)'\n      captures:\n        1: meta.attribute-with-value.style.html\n        2: entity.other.attribute-name.style.html\n        3: punctuation.separator.key-value.html\n      push:\n        - match: '\"'\n          scope: string.quoted.double punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.style.html\n            - meta_content_scope: source.css\n            - match: '\"'\n              scope: string.quoted.double punctuation.definition.string.end.html\n              pop: true\n            - match: ''\n              # An anonymous context with an include is used here rather than\n              # a direct push, so that if the target context isn't found it's\n              # only a warning rather than an error. This will likely happen\n              # if the user has replaced the default CSS syntax\n              push:\n                - include: 'CSS.sublime-syntax#rule-list-body'\n              with_prototype:\n                - match: '(?=\")'\n                  pop: true\n                - include: attribute-entities\n        - match: \"'\"\n          scope: string.quoted.single punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.style.html\n            - meta_content_scope: source.css\n            - match: \"'\"\n              scope: string.quoted.single punctuation.definition.string.end.html\n              pop: true\n            - match: ''\n              # An anonymous context with an include is used here rather than\n              # a direct push, so that if the target context isn't found it's\n              # only a warning rather than an error. This will likely happen\n              # if the user has replaced the default CSS syntax\n              push:\n                - include: 'CSS.sublime-syntax#rule-list-body'\n              with_prototype:\n                - match: \"(?=')\"\n                  pop: true\n                - include: attribute-entities\n        - match: ''\n          pop: true\n\n  tag-event-attribute:\n    - match: |-\n        (?x)\\s*\\b((\n        onabort|onautocomplete|onautocompleteerror|onblur|oncancel|oncanplay|\n        oncanplaythrough|onchange|onclick|onclose|oncontextmenu|oncuechange|\n        ondblclick|ondrag|ondragend|ondragenter|ondragexit|ondragleave|ondragover|\n        ondragstart|ondrop|ondurationchange|onemptied|onended|onerror|onfocus|\n        oninput|oninvalid|onkeydown|onkeypress|onkeyup|onload|onloadeddata|\n        onloadedmetadata|onloadstart|onmousedown|onmouseenter|onmouseleave|\n        onmousemove|onmouseout|onmouseover|onmouseup|onmousewheel|onpause|onplay|\n        onplaying|onprogress|onratechange|onreset|onresize|onscroll|onseeked|\n        onseeking|onselect|onshow|onsort|onstalled|onsubmit|onsuspend|\n        ontimeupdate|ontoggle|onvolumechange|onwaiting)\\b\\s*(=)\\s*)\n      captures:\n        1: meta.attribute-with-value.event.html\n        2: entity.other.attribute-name.event.html\n        3: punctuation.separator.key-value.html\n      push:\n        - match: '\"'\n          scope: string.quoted.double punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.event.html\n            - match: '\"'\n              scope: string.quoted.double punctuation.definition.string.end.html\n              pop: true\n            - match: ''\n              push: 'scope:source.js'\n              with_prototype:\n                - match: '(?=\")'\n                  pop: true\n                - include: attribute-entities\n        - match: \"'\"\n          scope: string.quoted.single punctuation.definition.string.begin.html\n          set:\n            - meta_scope: meta.attribute-with-value.event.html\n            - match: \"'\"\n              scope: string.quoted.single punctuation.definition.string.end.html\n              pop: true\n            - match: ''\n              push: 'scope:source.js'\n              with_prototype:\n                - match: \"(?=')\"\n                  pop: true\n                - include: attribute-entities\n        - match: ''\n          pop: true\n\n  tag-stuff:\n    - include: tag-id-attribute\n    - include: tag-class-attribute\n    - include: tag-style-attribute\n    - include: tag-event-attribute\n    - include: tag-generic-attribute\n",
+			"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/HTML.sublime-syntax",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 16735,
+				"line_ending": "Unix",
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 588.0,
+		"last_filter": "re",
+		"selected_items":
+		[
+			[
+				"re",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"res",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"vm",
+				"View: Toggle Menu"
+			],
+			[
+				"set syntax py",
+				"Set Syntax: Python"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"syn py3",
+				"Set Syntax: Python 3"
+			],
+			[
+				"settings",
+				"Preferences: Settings"
+			],
+			[
+				"synt py",
+				"Set Syntax: Python 3"
+			],
+			[
+				"resourc",
+				"PackageResourceViewer: Open Resource"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"v",
+				"View: Toggle Menu"
+			],
+			[
+				"indent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"syntax sq",
+				"Set Syntax: SQL"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"syntax sql",
+				"Set Syntax: SQL"
+			],
+			[
+				"syntax py",
+				"Set Syntax: Python"
+			],
+			[
+				"conver",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"set syntax html",
+				"Set Syntax: HTML"
+			],
+			[
+				"convert to ta",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 810.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/User/MathML"
+	],
+	"file_history":
+	[
+		"/D/Projects/Superphage-Site/sp.css",
+		"/D/Projects/Superphage-Site/events/details.css",
+		"/D/Projects/Superphage-Site/utilities/fantasy.py",
+		"/D/Projects/Superphage-Site/events/details.py",
+		"/D/Projects/Superphage-Site/events/event.template.html",
+		"/D/Projects/Superphage-Site/events/index.py",
+		"/D/Projects/Superphage-Site/utilities/image.py",
+		"/D/Projects/Superphage-Site/events/event.details.template.html",
+		"/D/Projects/Superphage-Site/events/team.template.html",
+		"/D/Projects/Superphage-Site/palette.css",
+		"/D/Projects/Superphage-Site/events/player.template.html",
+		"/D/Projects/Superphage-Site/profile/index.py",
+		"/D/Projects/Superphage-Site/events/event.css",
+		"/D/Projects/Superphage-Site/utilities/user.py",
+		"/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/HTML.sublime-syntax",
+		"/E/stuff42remember.txt",
+		"/D/Projects/Superphage-Site/events/newLeague.js",
+		"/D/Projects/Superphage-Site/leagues/index.py",
+		"/D/Projects/Superphage-Site/utilities/logged-navbar.template.html",
+		"/D/Projects/Superphage-Site/events/events.psql",
+		"/D/Projects/Superphage-Site/utilities/unlogged-navbar.template.html",
+		"/D/Projects/Superphage-Site/utilities/cookies.py",
+		"/D/Projects/Superphage-Site/events/event.overlay.template.html",
+		"/D/Projects/Superphage-Site/sp.template.html",
+		"/D/Projects/Superphage-Site/leagues/new/index.py",
+		"/D/Projects/test.html",
+		"/D/Projects/Superphage-Site/profile/head.template.html",
+		"/D/Projects/Superphage-Site/profile/navbar.template.html",
+		"/D/Projects/Superphage-Site/palette.scss",
+		"/D/Projects/Superphage-Site/header.template.html",
+		"/D/Projects/Superphage-Site/site.sublime-project",
+		"/D/Projects/Superphage-Site/site.sublime-workspace",
+		"/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/User/postgreSQL.sublime-syntax",
+		"/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/SQL/SQL.sublime-syntax",
+		"/D/Projects/Superphage-Site/profile/profile.css",
+		"/D/Projects/Superphage-Site/utilities/saltAndHash.psql",
+		"/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/User/python3.sublime-syntax",
+		"/D/Projects/Superphage-Site/utilities/error.py",
+		"/D/Projects/Superphage-Site/utilities/auth.py",
+		"/D/Projects/Superphage-Site/profile/newuser.psql",
+		"/D/Projects/Superphage-Site/index.py",
+		"/D/Projects/Superphage-Site/sp.html",
+		"/D/Projects/Superphage-Site/profile/head.html.template",
+		"/D/Projects/Superphage-Site/profile/profile.html.template",
+		"/D/Projects/Superphage-Site/python3.sublime-syntax",
+		"/E/Downloads/Map_8-19-2017.json",
+		"/D/Projects/Superphage-Site/password.psql",
+		"/D/Projects/Superphage-Site/utilities/salt.psql",
+		"/C/Users/bfiec/AppData/Local/Temp/LoopErrors_main.cpp",
+		"/D/Projects/Superphage-Site/profile/changeImage.psql",
+		"/D/Projects/Superphage-Site/sp_logo.html",
+		"/D/Projects/Superphage-Site/.gitignore",
+		"/D/Projects/Superphage-Site/spsite.sublime-project",
+		"/D/Projects/Chat-client/chat.html",
+		"/D/Projects/L4.py",
+		"/D/Projects/Chat-client/chat.js",
+		"/E/Music.txt",
+		"/E/Downloads/setupCloud9.sh",
+		"/E/tvshows.txt",
+		"/E/Downloads/L2-1.py",
+		"/E/Movies.txt"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 156.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": true,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/syntax_test_html.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11253,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11253,
+								11253
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Miscellaneous.tmPreferences",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2483,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2483,
+								2483
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/html_completions.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21913,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21913,
+								21913
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/User/python3.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Snippets/html.sublime-snippet",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 247,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								247,
+								247
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Snippets/html (begin tag).sublime-snippet",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 241,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								241,
+								241
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/encode_html_entities.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 764,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								764,
+								764
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/User/python3.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/Comments.tmPreferences",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 537,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								537,
+								537
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/bfiec/AppData/Roaming/Sublime Text 3/Packages/HTML/HTML.sublime-syntax",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16735,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								16735
+							]
+						],
+						"settings":
+						{
+							"buffer_empty": false,
+							"create_dir": true,
+							"syntax": "Packages/YAML/YAML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 35.0
+	},
+	"input":
+	{
+		"height": 53.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "mathml.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pal",
+				"palette.css"
+			],
+			[
+				"deta",
+				"events\\details.css"
+			],
+			[
+				"profile/in",
+				"profile\\index.py"
+			],
+			[
+				"event.t",
+				"events\\event.template.html"
+			],
+			[
+				"eve",
+				"events\\event.details.template.html"
+			],
+			[
+				"team.",
+				"events\\team.template.html"
+			],
+			[
+				"",
+				"events\\details.css"
+			],
+			[
+				"sp.cs",
+				"sp.css"
+			],
+			[
+				"detai",
+				"events\\details.css"
+			],
+			[
+				"detali",
+				"events\\details.py"
+			],
+			[
+				"play",
+				"events\\player.template.html"
+			],
+			[
+				"team",
+				"events\\team.template.html"
+			],
+			[
+				"event.de",
+				"events\\event.details.template.html"
+			],
+			[
+				"fant",
+				"utilities\\fantasy.py"
+			],
+			[
+				"events/in",
+				"events\\index.py"
+			],
+			[
+				"imag",
+				"utilities\\image.py"
+			],
+			[
+				"det",
+				"events\\details.css"
+			],
+			[
+				"logg",
+				"utilities\\logged-navbar.template.html"
+			],
+			[
+				"inde",
+				"profile\\index.py"
+			],
+			[
+				"ind",
+				"index.py"
+			],
+			[
+				"profile/ind",
+				"profile\\index.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 378.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

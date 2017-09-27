@@ -1,0 +1,13 @@
+<snippet>
+	<content><![CDATA[<!DOCTYPE math>
+<math>
+<semantics>
+	$1
+</semantics>
+<annotations>
+$0
+</annotations>
+</math>]]></content>
+	<tabTrigger>math</tabTrigger>
+	<scope>text.math &amp; (- meta.tag | punctuation.definition.tag.begin)</scope>
+</snippet>

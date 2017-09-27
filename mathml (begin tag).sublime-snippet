@@ -1,0 +1,14 @@
+<snippet>
+	<description>math</description>
+	<content><![CDATA[!DOCTYPE math>
+<math>
+<semantics>
+	$1
+</semantics>
+<annotations>
+$0
+</annotations>
+</math>]]></content>
+	<tabTrigger>math</tabTrigger>
+	<scope>text.mathml entity.name.tag</scope>
+</snippet>
