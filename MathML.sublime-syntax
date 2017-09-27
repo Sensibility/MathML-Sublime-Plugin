@@ -59,7 +59,7 @@ contexts:
           pop: true
         - include: math-tags
 
-    - match: (</?)((?i:math|semantics|annotation(-xml)?)\b)
+    - match: (</?)((?i:semantics|annotation(-xml)?)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.structure.any.mathml
@@ -245,6 +245,7 @@ contexts:
               scope: punctuation.definition.string.end.mathml
               pop: true
             - include: attribute-entities
+        - include: tag-stuff
 
   tag-stuff:
     - include: tag-id-attribute
