@@ -4,5 +4,8 @@
 ##^^^entity.name.tag.xml
 ##                                   ^ punctuation.definition.tag.end
 <!DOCTYPE math>
-<math>
+<math id="" altimg="" display="" mathbackground="">
+	<semantics altimg="" >
+		
+	</semantics>
 </math>
