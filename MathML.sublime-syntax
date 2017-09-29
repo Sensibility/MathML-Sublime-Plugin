@@ -80,6 +80,17 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
+    - match: (</?)((?i:mo)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mo.mathml
+      push:
+        - meta_scope: meta.tag.block.mo.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-stuff
+        - include: tag-accent-attribute
     - include: entities
     - match: <>
       scope: invalid.illegal.incomplete.mathml
@@ -172,6 +183,36 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.id.mathml string.unquoted.mathml meta.toc-list.id.mathml
+        - match: ''
+          pop: true
+
+  tag-accent-attribute:
+    - match: '(?:^|\s+)\b((accent)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.accent.mathml
+        2: entity.other.attribute-name.accent.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.accent.mathml string.quoted.double.mathml
+            - meta_content_scope: meta.toc-list.accent.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.accent.mathml string.quoted.single.mathml
+            - meta_content_scope: meta.toc-list.accent.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.accent.mathml string.unquoted.mathml meta.toc-list.accent.mathml
         - match: ''
           pop: true
 
