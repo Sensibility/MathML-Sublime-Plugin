@@ -165,6 +165,7 @@ contexts:
     # Non-specifc, non-global attributes
     - include: tag-accent-attribute
     - include: tag-lspace-attribute
+    - include: linebreaking-tags
 
     #the `form` attribute, tells whether an operator is prefix, infix, postfix
     - match: '(?:^|\s+)\b((form)\b\s*(=)\s*)'
@@ -445,6 +446,117 @@ contexts:
           scope: meta.attribute-with-value.minsize.mathml string.unquoted.mathml
         - match: ''
           pop: true
+
+  #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
+  linebreaking-tags:
+    - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.linebreak.mathml
+        2: entity.other.attribute-name.linebreak.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.linebreak.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    - match: '(?:^|\s+)\b((linebreakmultchar)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.linebreakmultchar.mathml
+        2: entity.other.attribute-name.linebreakmultchar.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreakmultchar.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreakmultchar.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.linebreakmultchar.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    - match: '(?:^|\s+)\b((linebreakstyle)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.linebreakstyle.mathml
+        2: entity.other.attribute-name.linebreakstyle.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreakstyle.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreakstyle.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.linebreakstyle.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    - match: '(?:^|\s+)\b((lineleading)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.lineleading.mathml
+        2: entity.other.attribute-name.lineleading.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.lineleading.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.lineleading.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.lineleading.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
 
   #Specifies the amount of space to place before an operator or `mpadded` element
   tag-lspace-attribute:
