@@ -330,6 +330,7 @@ contexts:
 
   tag-stuff:
     - include: tag-id-attribute
+    - include: tag-class-attribute
     - include: tag-mathbackground-attribute
     #- include: tag-generic-attribute
 
