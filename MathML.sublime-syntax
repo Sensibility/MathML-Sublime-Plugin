@@ -253,34 +253,34 @@ contexts:
 
   #matches the class attribute, which is provided for use with stylesheets
   tag-class-attribute:
-  - match: '(?:^|\s+)\b((class)\b\s*(=)\s*)'
-    captures:
-      1: meta.attribute-with-value.class.mathml
-      2: entity.other.attribute-name.class.mathml
-      3: punctuation.separator.key-value.mathml
-    push:
-      - match: '"'
-        scope: punctuation.definition.string.begin.mathml
-        set:
-          - meta_scope: meta.attribute-with-value.class.mathml string.quoted.double.mathml
-          - meta_content_scope: meta.class-name.mathml
-          - match: '"'
-            scope: punctuation.definition.string.end.mathml
-            pop: true
-          - include: attribute-entities
-      - match: "'"
-        scope: punctuation.definition.string.begin.mathml
-        set:
-          - meta_scope: meta.attribute-with-value.class.mathml string.quoted.single.mathml
-          - meta_content_scope: meta.class-name.mathml
-          - match: "'"
-            scope: punctuation.definition.string.end.mathml
-            pop: true
-          - include: attribute-entities
-      - match: '(?:[^\s<>/''"]|/(?!>))+'
-        scope: meta.attribute-with-value.class.mathml string.unquoted.mathml meta.class-name.mathml
-      - match: ''
-        pop: true
+    - match: '(?:^|\s+)\b((class)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.class.mathml
+        2: entity.other.attribute-name.class.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.class.mathml string.quoted.double.mathml
+            - meta_content_scope: meta.class-name.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.class.mathml string.quoted.single.mathml
+            - meta_content_scope: meta.class-name.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.class.mathml string.unquoted.mathml meta.class-name.mathml
+        - match: ''
+          pop: true
 
   #matches attributes for marking accents on operators or variables
   tag-accent-attribute:
