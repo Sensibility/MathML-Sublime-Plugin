@@ -91,8 +91,7 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: tag-accent-attribute
-        - include: tag-form-attribute
+        - include: mo-tags
         - include: tag-stuff
     - include: entities
     - match: <>
@@ -159,8 +158,14 @@ contexts:
       captures:
         1: entity.other.attribute-name.mathml
 
-  #matches the `form` attribute, indicating whether an operator is prefix, infix or postfix
-  tag-form-attribute:
+  #matches attributes which are valid only for the `mo` tag, and includes other, non-global attributes that are valid for `mo` and one or more other tags
+  mo-tags:
+
+    # Non-specifc, non-global attributes
+    - include: tag-accent-attribute
+
+
+    #the `form` attribute, tells whether an operator is prefix, infix, postfix
     - match: '(?:^|\s+)\b((form)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.form.mathml
@@ -185,6 +190,34 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.form.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the `fence` attribute, tells whether an operator used to group or separate terms
+    - match: '(?:^|\s+)\b((fence)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.fence.mathml
+        2: entity.other.attribute-name.fence.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.fence.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.fence.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.fence.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
