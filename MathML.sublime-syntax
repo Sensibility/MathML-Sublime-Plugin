@@ -221,6 +221,34 @@ contexts:
         - match: ''
           pop: true
 
+    #the `moveablelimits` attribute, tells whether under- and overscripts attached to this operator should move to sub- and superscript positions when the displaystyle normally wouldn't allow over- and underscripts
+    - match: '(?:^|\s+)\b((moveablelimits)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.moveablelimits.mathml
+        2: entity.other.attribute-name.moveablelimits.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.moveablelimits.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.moveablelimits.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.moveablelimits.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
   tag-id-attribute:
     - match: '(?:^|\s+)\b((id)\b\s*(=)\s*)'
       captures:

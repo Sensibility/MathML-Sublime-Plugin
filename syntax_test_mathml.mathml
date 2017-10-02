@@ -5,9 +5,9 @@
 ##                                   ^ punctuation.definition.tag.end
 <!DOCTYPE math>
 <math id="" altimg="" display="" mathbackground="">
-	<semantics altimg="" >
+	<semantics altimg="" class="">
 		<mo mathbackground=""></mo>
-		<mo accent=" " form="" fence="true"></mo>
+		<mo accent=" " form="" fence="true" moveablelimits="false">+</mo>
 
 	</semantics>
 </math>
