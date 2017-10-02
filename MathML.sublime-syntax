@@ -164,7 +164,7 @@ contexts:
 
     # Non-specifc, non-global attributes
     - include: tag-accent-attribute
-
+    - include: tag-lspace-attribute
 
     #the `form` attribute, tells whether an operator is prefix, infix, postfix
     - match: '(?:^|\s+)\b((form)\b\s*(=)\s*)'
@@ -331,6 +331,90 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.rspace.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the `stretchy` attribute, tells whether an operator should stretch to match the size of adjacent material
+    - match: '(?:^|\s+)\b((stretchy)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.stretchy.mathml
+        2: entity.other.attribute-name.stretchy.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.stretchy.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.stretchy.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.stretchy.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the `symmetric` attribute, for operators with the 'stretchy' attribute, tells whether they should be kept symmetric about the "math axis" (centered fraction line)
+    - match: '(?:^|\s+)\b((symmetric)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.symmetric.mathml
+        2: entity.other.attribute-name.symmetric.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.symmetric.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.symmetric.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.symmetric.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  tag-lspace-attribute:
+    - match: '(?:^|\s+)\b((lspace)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.lspace.mathml
+        2: entity.other.attribute-name.lspace.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.lspace.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.lspace.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.lspace.mathml string.unquoted.mathml
         - match: ''
           pop: true
 

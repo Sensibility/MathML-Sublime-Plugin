@@ -7,9 +7,9 @@
 <math id="" altimg="" display="" mathbackground="">
 	<semantics altimg="" class="">
 		<mi mathbackground="">a</mi>
-		<mo accent=" " form="" fence="false" moveablelimits="false">+</mo>
+		<mo accent=" " form="infix" stretchy="true" symmetric="true" fence="false" moveablelimits="false">+</mo>
 		<mi>b</mi>
-		<mo largeop="true" separator="true" rspace="14pt">=</mo>
+		<mo largeop="true" separator="true" rspace="14pt" lspace="14pt">=</mo>
 
 	</semantics>
 </math>
