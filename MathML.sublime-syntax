@@ -93,6 +93,7 @@ contexts:
           pop: true
         - include: mo-tags
         - include: tag-stuff
+
     - include: entities
     - match: <>
       scope: invalid.illegal.incomplete.mathml
@@ -193,7 +194,7 @@ contexts:
         - match: ''
           pop: true
 
-    #the `fence` attribute, tells whether an operator used to group or separate terms
+    #the `fence` attribute, tells whether an operator used to group terms
     - match: '(?:^|\s+)\b((fence)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.fence.mathml
@@ -246,6 +247,62 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.moveablelimits.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the `largeop` attribute, tells whetherthe operator ought to be drawn larger than normal if displaystyle is set to true
+    - match: '(?:^|\s+)\b((largeop)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.largeop.mathml
+        2: entity.other.attribute-name.largeop.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.largeop.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.largeop.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.largeop.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the `separator` attribute, tells whetheroperator separates values and/or identifiers
+    - match: '(?:^|\s+)\b((separator)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.separator.mathml
+        2: entity.other.attribute-name.separator.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.separator.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.separator.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.separator.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
