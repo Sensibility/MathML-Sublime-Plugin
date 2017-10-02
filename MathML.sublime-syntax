@@ -70,7 +70,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mglyph|mi|mlabeledtr|mlongdiv|mmultiscripts|mn|mo|mover|mpadded|mphantom|mroot|mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mglyph|mi|mlabeledtr|mlongdiv|mmultiscripts|mn|mover|mpadded|mphantom|mroot|mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -80,6 +80,8 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
+
+    #captures the math operator tag
     - match: (</?)((?i:mo)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
@@ -89,8 +91,8 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: tag-stuff
         - include: tag-accent-attribute
+        - include: tag-stuff
     - include: entities
     - match: <>
       scope: invalid.illegal.incomplete.mathml
@@ -186,6 +188,38 @@ contexts:
         - match: ''
           pop: true
 
+  #matches the class attribute, which is provided for use with stylesheets
+  tag-class-attribute:
+  - match: '(?:^|\s+)\b((class)\b\s*(=)\s*)'
+    captures:
+      1: meta.attribute-with-value.class.mathml
+      2: entity.other.attribute-name.class.mathml
+      3: punctuation.separator.key-value.mathml
+    push:
+      - match: '"'
+        scope: punctuation.definition.string.begin.mathml
+        set:
+          - meta_scope: meta.attribute-with-value.class.mathml string.quoted.double.mathml
+          - meta_content_scope: meta.class-name.mathml
+          - match: '"'
+            scope: punctuation.definition.string.end.mathml
+            pop: true
+          - include: attribute-entities
+      - match: "'"
+        scope: punctuation.definition.string.begin.mathml
+        set:
+          - meta_scope: meta.attribute-with-value.class.mathml string.quoted.single.mathml
+          - meta_content_scope: meta.class-name.mathml
+          - match: "'"
+            scope: punctuation.definition.string.end.mathml
+            pop: true
+          - include: attribute-entities
+      - match: '(?:[^\s<>/''"]|/(?!>))+'
+        scope: meta.attribute-with-value.class.mathml string.unquoted.mathml meta.class-name.mathml
+      - match: ''
+        pop: true
+
+  #matches attributes for marking accents on operators or variables
   tag-accent-attribute:
     - match: '(?:^|\s+)\b((accent)\b\s*(=)\s*)'
       captures:
@@ -197,7 +231,6 @@ contexts:
           scope: punctuation.definition.string.begin.mathml
           set:
             - meta_scope: meta.attribute-with-value.accent.mathml string.quoted.double.mathml
-            - meta_content_scope: meta.toc-list.accent.mathml
             - match: '"'
               scope: punctuation.definition.string.end.mathml
               pop: true
@@ -206,16 +239,16 @@ contexts:
           scope: punctuation.definition.string.begin.mathml
           set:
             - meta_scope: meta.attribute-with-value.accent.mathml string.quoted.single.mathml
-            - meta_content_scope: meta.toc-list.accent.mathml
             - match: "'"
               scope: punctuation.definition.string.end.mathml
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.accent.mathml string.unquoted.mathml meta.toc-list.accent.mathml
+          scope: meta.attribute-with-value.accent.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
+  #matches the attribute that changes the background
   tag-mathbackground-attribute:
     - match: '(?:^|\s+)\b((mathbackground)\b\s*(=)\s*)'
       captures:
@@ -227,7 +260,6 @@ contexts:
           scope: punctuation.string.begin.mathml
           set: 
             - meta_scope: meta.attribute-with-value.mathbackground.mathml string.quoted.double.mathml
-            - meta_content_scope: meta.toc-list.mathbackground.mathml
             - match: '"'
               scope: punctuation.definition.string.end.mathml
               pop: true
@@ -236,13 +268,12 @@ contexts:
           scope: punctuation.string.begin.mathml
           set: 
             - meta_scope: meta.attribute-with-value.mathbackground.mathml string.quoted.double.mathml
-            - meta_content_scope: meta.toc-list.mathbackground.mathml
             - match: "'"
               scope: punctuation.definition.string.end.mathml
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml meta.toc-list.id.mathml
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
