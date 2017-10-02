@@ -9,7 +9,7 @@
 		<mi mathbackground="">a</mi>
 		<mo accent=" " form="" fence="false" moveablelimits="false">+</mo>
 		<mi>b</mi>
-		<mo largeop="true" separator="true">=</mo>
+		<mo largeop="true" separator="true" rspace="14pt">=</mo>
 
 	</semantics>
 </math>

@@ -306,6 +306,34 @@ contexts:
         - match: ''
           pop: true
 
+    #the `rspace` attribute, specifies a length of space to be placed after the operator
+    - match: '(?:^|\s+)\b((rspace)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.rspace.mathml
+        2: entity.other.attribute-name.rspace.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rspace.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rspace.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.rspace.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
   tag-id-attribute:
     - match: '(?:^|\s+)\b((id)\b\s*(=)\s*)'
       captures:
