@@ -390,6 +390,63 @@ contexts:
         - match: ''
           pop: true
 
+    #theoperator's maximum size
+    - match: '(?:^|\s+)\b((maxsize)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.maxsize.mathml
+        2: entity.other.attribute-name.maxsize.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.maxsize.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.maxsize.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.maxsize.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the operator's minimum size
+    - match: '(?:^|\s+)\b((minsize)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.minsize.mathml
+        2: entity.other.attribute-name.minsize.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.minsize.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.minsize.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.minsize.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #Specifies the amount of space to place before an operator or `mpadded` element
   tag-lspace-attribute:
     - match: '(?:^|\s+)\b((lspace)\b\s*(=)\s*)'
       captures:
