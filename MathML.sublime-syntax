@@ -92,6 +92,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-accent-attribute
+        - include: tag-form-attribute
         - include: tag-stuff
     - include: entities
     - match: <>
@@ -157,6 +158,35 @@ contexts:
     - match: '\s+([a-zA-Z0-9:\-_.]+)'
       captures:
         1: entity.other.attribute-name.mathml
+
+  #matches the `form` attribute, indicating whether an operator is prefix, infix or postfix
+  tag-form-attribute:
+    - match: '(?:^|\s+)\b((form)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.form.mathml
+        2: entity.other.attribute-name.form.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.form.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.form.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.form.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
 
   tag-id-attribute:
     - match: '(?:^|\s+)\b((id)\b\s*(=)\s*)'
