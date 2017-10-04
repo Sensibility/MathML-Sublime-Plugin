@@ -94,31 +94,33 @@ contexts:
         - include: mo-tags
         - include: tag-stuff
 
-    #captures the math identifier tag
-    - match: (</?)((?i:mi)\b)
+    #captures token tags
+    - match: (</?)((?i:mi|mn|mtext)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
-        2: entity.name.tag.block.mi.mathml
+        2: entity.name.tag.block.token.mathml
       push:
-        - meta_scope: meta.tag.block.mi.mathml
+        - meta_scope: meta.tag.block.token.mathml
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: token-tags
         - include: tag-stuff
 
-    #captures the math number tag
-    - match: (</?)((?i:mn)\b)
+    #captures the math space tag (which is technically a token, but supports its own attributes)
+    - match: (</?)((?i:mspace)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
-        2: entity.name.tag.block.mn.mathml
+        2: entity.name.tag.block.mspace.mathml
       push:
-        - meta_scope: meta.tag.block.mn.mathml
+        - meta_scope: meta.tag.block.mspace.mathml
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: token-tags
+        - include: mspace-tags
         - include: tag-stuff
+
 
 
     - include: entities
@@ -475,18 +477,22 @@ contexts:
         - match: ''
           pop: true
 
-  #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
-  linebreaking-tags:
-    - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
+  #matches attributes which are valid only for the `mspace` tag, and includes the `linebreak` attribute
+  mspace-tags:
+
+    - include: tag-linebreak-attribute
+
+    #specifies the width of the space
+    - match: '(?:^|\s+)\b((width)\b\s*(=)\s*)'
       captures:
-        1: meta.attribute-with-value.linebreak.mathml
-        2: entity.other.attribute-name.linebreak.mathml
+        1: meta.attribute-with-value.width.mathml
+        2: entity.other.attribute-name.width.mathml
         3: punctuation.separator.key-value.mathml
       push:
         - match: '"'
           scope: punctuation.definition.string.begin.mathml
           set:
-            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.double.mathml
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
             - match: '"'
               scope: punctuation.definition.string.end.mathml
               pop: true
@@ -494,15 +500,78 @@ contexts:
         - match: "'"
           scope: punctuation.definition.string.begin.mathml
           set:
-            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.single.mathml
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.single.mathml
             - match: "'"
               scope: punctuation.definition.string.end.mathml
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.linebreak.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.width.mathml string.unquoted.mathml
         - match: ''
           pop: true
+
+    #specifies the height of the space (above baseline)
+    - match: '(?:^|\s+)\b((height)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.height.mathml
+        2: entity.other.attribute-name.height.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.height.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies the depth of the space (below baseline)
+    - match: '(?:^|\s+)\b((depth)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.depth.mathml
+        2: entity.other.attribute-name.depth.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.depth.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+
+
+  #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
+  linebreaking-tags:
+
+    - include: tag-linebreak-attribute
 
     - match: '(?:^|\s+)\b((linebreakmultchar)\b\s*(=)\s*)'
       captures:
@@ -675,6 +744,35 @@ contexts:
           scope: meta.attribute-with-value.dir.mathml string.unquoted.mathml
         - match: ''
           pop: true    
+
+  #Specifies whether a line break should/can occur/would look nice here
+  tag-linebreak-attribute:
+    - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.linebreak.mathml
+        2: entity.other.attribute-name.linebreak.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.linebreak.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
 
   #Specifies the amount of space to place before an operator or `mpadded` element
   tag-lspace-attribute:
