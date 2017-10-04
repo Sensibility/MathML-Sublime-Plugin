@@ -70,7 +70,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mglyph|mi|mlabeledtr|mlongdiv|mmultiscripts|mn|mover|mpadded|mphantom|mroot|mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mglyph|mlabeledtr|mlongdiv|mmultiscripts|mn|mover|mpadded|mphantom|mroot|mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -92,6 +92,19 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: mo-tags
+        - include: tag-stuff
+
+    #captures the math identifier tag
+    - match: (</?)((?i:mi)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mi.mathml
+      push:
+        - meta_scope: meta.tag.block.mi.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: mi-tags
         - include: tag-stuff
 
     - include: entities
@@ -128,6 +141,7 @@ contexts:
           pop: true
         - include: entities
 
+  #Nothing uses this yet, it's just here as a template. Possible use in the future with external xml namespaces
   tag-generic-attribute:
     - match: '(?:^|\s+)(([a-zA-Z0-9:\-_.]+)\s*(=)\s*)'
       captures:
@@ -447,6 +461,12 @@ contexts:
         - match: ''
           pop: true
 
+  #matches attributes which are valid only for the `mi` tag, and includes other, non-global attributes that are valid for `mi` and one or more other tags
+  mi-tags:
+
+    #non-global, non-specific attributes
+    - include: tag-mathsize-attribute
+
   #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
   linebreaking-tags:
     - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
@@ -557,6 +577,34 @@ contexts:
         - match: ''
           pop: true
 
+  #Defines how big a math element can be
+  tag-mathsize-attribute:
+    - match: '(?:^|\s+)\b((mathsize)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.mathsize.mathml
+        2: entity.other.attribute-name.mathsize.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathsize.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathsize.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.mathsize.mathml string.unquoted.mathml
+        - match: ''
+          pop: true    
 
   #Specifies the amount of space to place before an operator or `mpadded` element
   tag-lspace-attribute:
