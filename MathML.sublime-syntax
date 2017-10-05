@@ -4,7 +4,7 @@ name: MathML
 file_extensions:
   - mathml
   - mathm
-  - mhtml
+  - math
 first_line_match: (?i)<(!DOCTYPE\s*)?math
 scope: text.mathml.basic
 contexts:
