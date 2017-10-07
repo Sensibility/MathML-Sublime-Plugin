@@ -391,7 +391,7 @@ contexts:
         - match: ''
           pop: true
 
-    #theoperator's maximum size
+    #the operator's maximum size
     - match: '(?:^|\s+)\b((maxsize)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.maxsize.mathml
@@ -449,6 +449,8 @@ contexts:
 
   #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
   linebreaking-tags:
+
+    #Indicates if a linebreak is a good idea here
     - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.linebreak.mathml
@@ -476,6 +478,7 @@ contexts:
         - match: ''
           pop: true
 
+    #Specifies the character to print if an implicit multiplication occurs at a linebreak
     - match: '(?:^|\s+)\b((linebreakmultchar)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.linebreakmultchar.mathml
@@ -503,6 +506,7 @@ contexts:
         - match: ''
           pop: true
 
+    #Indicates if linebreaks ought to occur before or after operators or duplicate operators accross line breaks or use the style currently declared for infix operators
     - match: '(?:^|\s+)\b((linebreakstyle)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.linebreakstyle.mathml
@@ -530,6 +534,7 @@ contexts:
         - match: ''
           pop: true
 
+    #Specifies the amount of vertical space to use after a linebreak
     - match: '(?:^|\s+)\b((lineleading)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.lineleading.mathml
