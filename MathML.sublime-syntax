@@ -4,11 +4,15 @@ name: MathML
 file_extensions:
   - mathml
   - mathm
-  - mhtml
+  - math
 first_line_match: (?i)<(!DOCTYPE\s*)?math
 scope: text.mathml.basic
 contexts:
   main:
+    # I feel the need for an explanation; it may look at first glance that I'm pointlessly giving every individual
+    # attribute its own capture group, slowing down syntax highlighting for no reason. The reason I'm doing this is
+    # so I can eventually enforce a set of allowable values for attributes, which are pretty varied (except for
+    # numerical values). I just need to figure out how to do that.
     - match: (<\?)(xml)
       captures:
         1: punctuation.definition.tag.begin.mathml
@@ -70,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mglyph|mi|mlabeledtr|mlongdiv|mmultiscripts|mn|mover|mpadded|mphantom|mroot|mrow|ms|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mroot|mrow|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -82,6 +86,7 @@ contexts:
         - include: tag-stuff
 
     #captures the math operator tag
+    #Unfortunately, the highlighting theme doesn't appear to support operators in markup languages
     - match: (</?)((?i:mo)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
@@ -90,12 +95,87 @@ contexts:
         - meta_scope: meta.tag.block.mo.mathml
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
+          set:
+            - meta_scope: keyword.operator.arithmetic.mathml
+            - include: entities
+            - match: '(</)((?i:mo))(>)'
+              captures:
+                1: punctuation.definition.tag.begin.mathml
+                2: entity.name.tag.block.mo.mathml
+                3: punctuation.definition.tag.end.mathml
+              pop: true
           pop: true
         - include: mo-tags
         - include: tag-stuff
 
+    #captures glyphs, which are a special token tag
+    - match: (</?)((?i:mglyph)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mglyph.mathml
+      push:
+        - meta_scope: meta.tag.block.glyph.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: token-tags
+        - include: mglyph-tags
+        - include: tag-stuff
+
+    #captures token tags
+    - match: (</?)((?i:mi|mn|mtext)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.token.mathml
+      push:
+        - meta_scope: meta.tag.block.token.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: token-tags
+        - include: tag-stuff
+
+    #captures the math space tag (which is technically a token, but supports its own attributes)
+    - match: (</?)((?i:mspace)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mspace.mathml
+      push:
+        - meta_scope: meta.tag.block.mspace.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: token-tags
+        - include: mspace-tags
+        - include: tag-stuff
+
+    #captures the string literal tag (which is technically a token, but supports its own attributes)
+    #I'm actually not 100% right now on how to not highlight the closing tag as a string, but this is pretty neat so far
+    - match: (<)((?i:ms)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.ms.mathml
+      push:
+        #- meta_scope: meta.tag.block.ms.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          set:
+            - meta_scope: string.double.quoted.mathml
+            - include: entities
+            - match: '(</)((?i:ms))(>)'
+              captures:
+                1: punctuation.definition.tag.begin.mathml
+                2: entity.name.tag.block.ms.mathml
+                3: punctuation.definition.tag.end.mathml
+              pop: true
+        - include: token-tags
+        - include: ms-tags
+        - include: tag-stuff
+
+
+
     - include: entities
-    - match: <>
+    - match: <.*>
       scope: invalid.illegal.incomplete.mathml
   entities-common:
     - match: "(&)([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+)(;)"
@@ -128,6 +208,7 @@ contexts:
           pop: true
         - include: entities
 
+  #Nothing uses this yet, it's just here as a template. Possible use in the future with external xml namespaces
   tag-generic-attribute:
     - match: '(?:^|\s+)(([a-zA-Z0-9:\-_.]+)\s*(=)\s*)'
       captures:
@@ -447,20 +528,24 @@ contexts:
         - match: ''
           pop: true
 
-  #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
-  linebreaking-tags:
 
-    #Indicates if a linebreak is a good idea here
-    - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
+  #matches attributes which are valid only for the `mspace` tag, and includes the `linebreak` attribute
+  mspace-tags:
+
+    - include: tag-linebreak-attribute
+    - include: indent-tags #This is ridiculous to me; the spec says that you should linebreak only on operators, so indentation shouldn't be specified on a space. But they let you do it anyway, because why not?
+
+    #specifies the width of the space
+    - match: '(?:^|\s+)\b((width)\b\s*(=)\s*)'
       captures:
-        1: meta.attribute-with-value.linebreak.mathml
-        2: entity.other.attribute-name.linebreak.mathml
+        1: meta.attribute-with-value.width.mathml
+        2: entity.other.attribute-name.width.mathml
         3: punctuation.separator.key-value.mathml
       push:
         - match: '"'
           scope: punctuation.definition.string.begin.mathml
           set:
-            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.double.mathml
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
             - match: '"'
               scope: punctuation.definition.string.end.mathml
               pop: true
@@ -468,17 +553,280 @@ contexts:
         - match: "'"
           scope: punctuation.definition.string.begin.mathml
           set:
-            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.single.mathml
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.single.mathml
             - match: "'"
               scope: punctuation.definition.string.end.mathml
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.linebreak.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.width.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
-    #Specifies the character to print if an implicit multiplication occurs at a linebreak
+    #specifies the height of the space (above baseline)
+    - match: '(?:^|\s+)\b((height)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.height.mathml
+        2: entity.other.attribute-name.height.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.height.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies the depth of the space (below baseline)
+    - match: '(?:^|\s+)\b((depth)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.depth.mathml
+        2: entity.other.attribute-name.depth.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.depth.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+
+  #matches attributes which are valid only for the `ms` tag
+  ms-tags:
+
+    #specifies starting quote (not necessarily "left quote" in e.g. right-to-left environment)
+    - match: '(?:^|\s+)\b((lquote)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.lquote.mathml
+        2: entity.other.attribute-name.lquote.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.lquote.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.lquote.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.lquote.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+    #specifies ending quote (not necessarily "right quote" in e.g. right-to-left environment)
+    - match: '(?:^|\s+)\b((rquote)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.rquote.mathml
+        2: entity.other.attribute-name.rquote.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rquote.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rquote.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.rquote.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+  #matches attributes which are valid only for the `mglyph` tag
+  mglyph-tags:
+    #the glyph's width
+    - match: '(?:^|\s+)\b((width)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.width.mathml
+        2: entity.other.attribute-name.width.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the glyph's height
+    - match: '(?:^|\s+)\b((height)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.height.mathml
+        2: entity.other.attribute-name.height.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #A uri pointing to the glyph's image data
+    - match: '(?:^|\s+)\b((src)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.src.mathml
+        2: entity.other.attribute-name.src.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.src.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.src.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #the glyph's vertical alignment
+    - match: '(?:^|\s+)\b((valign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.valign.mathml
+        2: entity.other.attribute-name.valign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.valign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.valign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #text to display if the glyph source is unreachable, or it cannot otherwise render
+    - match: '(?:^|\s+)\b((alt)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.alt.mathml
+        2: entity.other.attribute-name.alt.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.alt.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.alt.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+
+  #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
+  linebreaking-tags:
+
+    - include: tag-linebreak-attribute
+
     - match: '(?:^|\s+)\b((linebreakmultchar)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.linebreakmultchar.mathml
@@ -506,7 +854,6 @@ contexts:
         - match: ''
           pop: true
 
-    #Indicates if linebreaks ought to occur before or after operators or duplicate operators accross line breaks or use the style currently declared for infix operators
     - match: '(?:^|\s+)\b((linebreakstyle)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.linebreakstyle.mathml
@@ -534,7 +881,6 @@ contexts:
         - match: ''
           pop: true
 
-    #Specifies the amount of vertical space to use after a linebreak
     - match: '(?:^|\s+)\b((lineleading)\b\s*(=)\s*)'
       captures:
         1: meta.attribute-with-value.lineleading.mathml
@@ -562,6 +908,382 @@ contexts:
         - match: ''
           pop: true
 
+  #These attributes are valid for any token tags (e.g. `mi`, `mo` etc.)
+  token-tags:
+
+    #Specifies the permissible size of the math element
+    - match: '(?:^|\s+)\b((mathsize)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.mathsize.mathml
+        2: entity.other.attribute-name.mathsize.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathsize.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathsize.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.mathsize.mathml string.unquoted.mathml
+        - match: ''
+          pop: true    
+
+    #Specifies a font variant to be used
+    - match: '(?:^|\s+)\b((mathvariant)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.mathvariant.mathml
+        2: entity.other.attribute-name.mathvariant.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathvariant.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.mathvariant.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.mathvariant.mathml string.unquoted.mathml
+        - match: ''
+          pop: true    
+
+    - include: tag-dir-attribute
+
+  #These tags are common to all presentation elements
+  presentation-style-tags:
+
+    #changes the background color (or the special color 'transparent')
+    - match: '(?:^|\s+)\b((mathbackground)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.mathbackground.mathml
+        2: entity.other.attribute-name.mathbackground.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.mathbackground.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.mathbackground.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #changes text color
+    - match: '(?:^|\s+)\b((mathcolor)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.mathcolor.mathml
+        2: entity.other.attribute-name.mathcolor.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.mathcolor.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.mathcolor.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #These attributes are valid for any tags that support indentation
+  indent-tags:
+
+    # specifies the position of lines when linebreaking
+    - match: '(?:^|\s+)\b((indentalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indentalign.mathml
+        2: entity.other.attribute-name.indentalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentalign.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indentalign.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+    #specifies an id to align with for indentation
+    - match: '(?:^|\s+)\b((indenttarget)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indenttarget.mathml
+        2: entity.other.attribute-name.indenttarget.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indenttarget.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indenttarget.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indenttarget.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies an additional offset to apply to the calculated indent position
+    - match: '(?:^|\s+)\b((indentshift)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indentshift.mathml
+        2: entity.other.attribute-name.indentshift.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentshift.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentshift.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indentshift.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+    #specifies the indentation style to use for the first line of a formula
+    - match: '(?:^|\s+)\b((indentalignfirst)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indentalignfirst.mathml
+        2: entity.other.attribute-name.indentalignfirst.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentalignfirst.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentalignfirst.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indentalignfirst.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+    #specifies the offset to use for the first line of a formula
+    - match: '(?:^|\s+)\b((indentshiftfirst)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indentshiftfirst.mathml
+        2: entity.other.attribute-name.indentshiftfirst.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentshiftfirst.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentshiftfirst.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indentshiftfirst.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+    #specifies the indentation style to use for the last line when a linebreak occurs
+    - match: '(?:^|\s+)\b((indentalignlast)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indentalignlast.mathml
+        2: entity.other.attribute-name.indentalignlast.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentalignlast.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentalignlast.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indentalignlast.mathml string.unquoted.mathml
+        - match: ''
+          pop: true  
+
+    #specifies the offset to use for the last line when a linebreak occurs
+    - match: '(?:^|\s+)\b((indentshiftlast)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.indentshiftlast.mathml
+        2: entity.other.attribute-name.indentshiftlast.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentshiftlast.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.indentshiftlast.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.indentshiftlast.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #Specifies text direction
+  tag-dir-attribute:
+    - match: '(?:^|\s+)\b((dir)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.dir.mathml
+        2: entity.other.attribute-name.dir.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.dir.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.dir.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.dir.mathml string.unquoted.mathml
+        - match: ''
+          pop: true    
+
+  #Specifies whether a line break should/can occur/would look nice here
+  tag-linebreak-attribute:
+    - match: '(?:^|\s+)\b((linebreak)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.linebreak.mathml
+        2: entity.other.attribute-name.linebreak.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linebreak.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.linebreak.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
 
   #Specifies the amount of space to place before an operator or `mpadded` element
   tag-lspace-attribute:
@@ -682,35 +1404,6 @@ contexts:
         - match: ''
           pop: true
 
-  #matches the attribute that changes the background
-  tag-mathbackground-attribute:
-    - match: '(?:^|\s+)\b((mathbackground)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.mathbackground.mathml
-        2: entity.other.attribute-name.mathbackground.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.string.begin.mathml
-          set: 
-            - meta_scope: meta.attribute-with-value.mathbackground.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.string.begin.mathml
-          set: 
-            - meta_scope: meta.attribute-with-value.mathbackground.mathml string.quoted.double.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
-
 
   math-tags:
     - match: '(?:^|\s+)\b((display)\b\s*(=)\s*)'
@@ -762,9 +1455,10 @@ contexts:
             - include: attribute-entities
         - include: tag-stuff
 
+  #global attributes
   tag-stuff:
     - include: tag-id-attribute
     - include: tag-class-attribute
-    - include: tag-mathbackground-attribute
+    - include: presentation-style-tags
     #- include: tag-generic-attribute
 
