@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mroot|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mscarries|mscarry|msgroup|msline|mspace|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -187,6 +187,7 @@ contexts:
         - include: tag-stuff
 
     #captures an mfrac, which groups terms into a fraction
+    #This tag requires exactly two children as arguments, but I'm not enforcing that yet, just a snippet to make it easier
     - match: (<)((?i:mfrac)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
@@ -197,6 +198,32 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: mfrac-tags
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #captures the msqrt, which is - somewhat obviously - a square root
+    - match: (<)((?i:msqrt)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.msqrt.mathml
+      push:
+        - meta_scope: meta.tag.block.msqrt.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #captures the mroot, which is - somewhat obviously - a root
+    - match: (<)((?i:mroot)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mroot.mathml
+      push:
+        - meta_scope: meta.tag.block.mroot.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
         - include: presentation-style-tags
         - include: tag-stuff
 
