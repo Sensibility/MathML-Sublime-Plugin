@@ -173,7 +173,7 @@ contexts:
         - include: tag-stuff
 
     #captures an mrow, which groups terms
-    - match: (<)((?i:mrow)\b)
+    - match: (</?)((?i:mrow)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.mrow.mathml
@@ -188,7 +188,7 @@ contexts:
 
     #captures an mfrac, which groups terms into a fraction
     #This tag requires exactly two children as arguments, but I'm not enforcing that yet, just a snippet to make it easier
-    - match: (<)((?i:mfrac)\b)
+    - match: (</?)((?i:mfrac)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.mfrac.mathml
@@ -202,7 +202,7 @@ contexts:
         - include: tag-stuff
 
     #captures the msqrt, which is - somewhat obviously - a square root
-    - match: (<)((?i:msqrt)\b)
+    - match: (</?)((?i:msqrt)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.msqrt.mathml
