@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mroot|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mroot|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -172,6 +172,7 @@ contexts:
         - include: ms-tags
         - include: tag-stuff
 
+    #captures an mrow, which groups terms
     - match: (<)((?i:mrow)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
@@ -181,10 +182,23 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: token-tags
-        - include: mrow-tags
+        - include: tag-dir-attribute
+        - include: presentation-style-tags
         - include: tag-stuff
 
+    #captures an mfrac, which groups terms into a fraction
+    - match: (<)((?i:mfrac)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mfrac.mathml
+      push:
+        - meta_scope: meta.tag.block.mfrac.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: mfrac-tags
+        - include: presentation-style-tags
+        - include: tag-stuff
 
 
     - include: entities
@@ -831,6 +845,121 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #matches attributes which are only valid for the `mfrac` tag
+  mfrac-tags:
+
+    #specifies how thick the fraction line is (unitless '0' allowed)
+    - match: '(?:^|\s+)\b((linethickness)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.linethickness.mathml
+        2: entity.other.attribute-name.linethickness.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linethickness.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.linethickness.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.linethickness.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies numerator alignment
+    - match: '(?:^|\s+)\b((numalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.numalign.mathml
+        2: entity.other.attribute-name.numalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.numalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.numalign.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.numalign.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies denominator alignment
+    - match: '(?:^|\s+)\b((denomalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.denomalign.mathml
+        2: entity.other.attribute-name.denomalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.denomalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.denomalign.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.denomalign.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #if true, renders the fraction as 'bevelled', which is the sort-of sideways thing
+    - match: '(?:^|\s+)\b((bevelled)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.bevelled.mathml
+        2: entity.other.attribute-name.bevelled.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.bevelled.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.bevelled.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.bevelled.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
