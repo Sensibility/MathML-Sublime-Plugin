@@ -1,0 +1,12 @@
+<snippet>
+	<content><![CDATA[<mroot>
+		<${1:argument}>
+			$2
+		</$1>
+		<${3:index}>
+			$4
+		</$3>
+</mroot>]]></content>
+	<tabTrigger>root</tabTrigger>
+	<scope>text.mathml.basic &amp; (- meta.tag | punctuation.definition.tag.begin)</scope>
+</snippet>

@@ -1,0 +1,7 @@
+<snippet>
+	<content><![CDATA[<msqrt>
+		<${1:argument}>$2</$1>
+</msqrt>]]></content>
+	<tabTrigger>sqrt</tabTrigger>
+	<scope>text.mathml.basic &amp; (- meta.tag | punctuation.definition.tag.begin)</scope>
+</snippet>
