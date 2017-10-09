@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mroot|mrow|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mfrac|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mroot|mscarries|mscarry|msgroup|msline|mspace|msqrt|msrow|mstyle|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -114,7 +114,7 @@ contexts:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.mglyph.mathml
       push:
-        - meta_scope: meta.tag.block.glyph.mathml
+        - meta_scope: meta.tag.block.mglyph.mathml
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
@@ -170,6 +170,19 @@ contexts:
               pop: true
         - include: token-tags
         - include: ms-tags
+        - include: tag-stuff
+
+    - match: (<)((?i:mrow)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mrow.mathml
+      push:
+        - meta_scope: meta.tag.block.mrow.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: token-tags
+        - include: mrow-tags
         - include: tag-stuff
 
 
