@@ -238,6 +238,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: presentation-style-tags
+        - include: mfenced-tags
         - include: tag-stuff
 
     #captures the mstyle, which sets math style for all contained elements
@@ -622,7 +623,6 @@ contexts:
         - match: ''
           pop: true
 
-
   #matches attributes which are valid only for the `mspace` tag, and includes the `linebreak` attribute
   mspace-tags:
 
@@ -637,7 +637,6 @@ contexts:
 
     #specifies the depth of the space (below baseline)
     - include: tag-depth-attribute
-
 
   #matches attributes which are valid only for the `ms` tag
   ms-tags:
@@ -877,6 +876,93 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.bevelled.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #attributes valid for the mfenced tag
+  mfenced-tags:
+
+    #specifies an opening character
+    - match: '(?:^|\s+)\b((open)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.open.mathml
+        2: entity.other.attribute-name.open.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.open.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.open.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.open.mathml string.unquoted.mathml
+        - match: ''
+          pop: true    
+
+    #specifies a closing character
+    - match: '(?:^|\s+)\b((close)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.close.mathml
+        2: entity.other.attribute-name.close.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.close.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.close.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.close.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((separators)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.separators.mathml
+        2: entity.other.attribute-name.separators.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.separators.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.separators.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.separators.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
