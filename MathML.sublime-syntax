@@ -227,6 +227,19 @@ contexts:
         - include: presentation-style-tags
         - include: tag-stuff
 
+    #captures the mfenced tag which groups and fences its arguments, as though they were nested like so: <mrow> <mo fence="true"> ( </mo> args <mo fence="true"> ) </mo> </mrow>
+    - match: (</?)((?i:mfenced)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mfenced.mathml
+      push:
+        - meta_scope: meta.tag.block.mfenced.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tag-stuff
+
     #captures the mstyle, which sets math style for all contained elements
     - match: (</?)((?i:mstyle)\b)
       captures:
