@@ -172,8 +172,8 @@ contexts:
         - include: ms-tags
         - include: tag-stuff
 
-    #captures an mrow, which groups terms or an mphantom, which is identical to an mrow except that it is rendered invisibly
-    - match: (</?)((?i:mrow|mphantom)\b)
+    #captures an mrow, which groups terms or an mphantom, which is identical to an mrow except that it is rendered invisibly, or a merror which is identical to an mrow except that it is rendered as an error
+    - match: (</?)((?i:mrow|mphantom|merror)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.mrow.mathml
@@ -268,17 +268,17 @@ contexts:
         - include: mstyle-tags
         - include: tag-stuff
 
-    #an element which displays its contents as an error. It takes one argument, or any number which are then interpreted as an inferred `mrow`
-    - match: (</?)((?i:merror)\b)
+    #an element which pads its contents according to the given attributes
+    - match: (</?)((?i:mpadded)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
-        2: entity.name.tag.block.merror.mathml
+        2: entity.name.tag.block.mpadded.mathml
       push:
-        - meta_scope: meta.tag.block.merror.mathml
+        - meta_scope: meta.tag.block.mpadded.mathml
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: merror-tags
+        - include: mpadded-tags
         - include: presentation-style-tags
         - include: tag-stuff
 
@@ -1163,7 +1163,7 @@ contexts:
           pop: true
 
   #attributes valid for the merror tag
-  merror-tags:
+  mpadded-tags:
     - include: tag-height-attribute
     - include: tag-width-attribute
     - include: tag-depth-attribute
