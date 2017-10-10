@@ -1,0 +1,7 @@
+<snippet>
+	<content><![CDATA[<mpadded width="${1:auto}" height="${2:auto}" depth="${3:0}">
+		${3:<!-- contents -->}
+</mpadded>]]></content>
+	<tabTrigger>pad</tabTrigger>
+	<scope>text.mathml.basic &amp; (- meta.tag | punctuation.definition.tag.begin)</scope>
+</snippet>
