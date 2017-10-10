@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mscarries|mscarry|msgroup|msline|msrow|msub|msup|msubsup|mtable|mtd|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mover|mscarries|mscarry|msgroup|msline|msrow|msub|msup|msubsup|mtable|mtd|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
