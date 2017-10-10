@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|merror|mfenced|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mphantom|mscarries|mscarry|msgroup|msline|mspace|msrow|msub|msup|msubsup|mtable|mtd|mtext|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|mfenced|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mscarries|mscarry|msgroup|msline|msrow|msub|msup|msubsup|mtable|mtd|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -172,8 +172,8 @@ contexts:
         - include: ms-tags
         - include: tag-stuff
 
-    #captures an mrow, which groups terms
-    - match: (</?)((?i:mrow)\b)
+    #captures an mrow, which groups terms or an mphantom, which is identical to an mrow except that it is rendered invisibly
+    - match: (</?)((?i:mrow|mphantom)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.mrow.mathml
@@ -238,6 +238,20 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: mstyle-tags
+        - include: tag-stuff
+
+    #an element which displays its contents as an error. It takes one argument, or any number which are then interpreted as an inferred `mrow`
+    - match: (</?)((?i:merror)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.merror.mathml
+      push:
+        - meta_scope: meta.tag.block.merror.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: merror-tags
+        - include: presentation-style-tags
         - include: tag-stuff
 
 
@@ -603,88 +617,13 @@ contexts:
     - include: indent-tags #This is ridiculous to me; the spec says that you should linebreak only on operators, so indentation shouldn't be specified on a space. But they let you do it anyway, because why not?
 
     #specifies the width of the space
-    - match: '(?:^|\s+)\b((width)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.width.mathml
-        2: entity.other.attribute-name.width.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.single.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.width.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    - include: tag-width-attribute
 
     #specifies the height of the space (above baseline)
-    - match: '(?:^|\s+)\b((height)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.height.mathml
-        2: entity.other.attribute-name.height.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.single.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.height.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    - include: tag-height-attribute
 
     #specifies the depth of the space (below baseline)
-    - match: '(?:^|\s+)\b((depth)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.depth.mathml
-        2: entity.other.attribute-name.depth.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.single.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.depth.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    - include: tag-depth-attribute
 
 
   #matches attributes which are valid only for the `ms` tag
@@ -749,60 +688,10 @@ contexts:
   #matches attributes which are valid only for the `mglyph` tag
   mglyph-tags:
     #the glyph's width
-    - match: '(?:^|\s+)\b((width)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.width.mathml
-        2: entity.other.attribute-name.width.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.string.begin.mathml
-          set: 
-            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.string.begin.mathml
-          set: 
-            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    - include: tag-width-attribute
 
     #the glyph's height
-    - match: '(?:^|\s+)\b((height)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.height.mathml
-        2: entity.other.attribute-name.height.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.string.begin.mathml
-          set: 
-            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.string.begin.mathml
-          set: 
-            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    - include: tag-height-attribute
 
     #A uri pointing to the glyph's image data
     - match: '(?:^|\s+)\b((src)\b\s*(=)\s*)'
@@ -1160,6 +1049,13 @@ contexts:
         - match: ''
           pop: true
 
+  #attributes valid for the merror tag
+  merror-tags:
+    - include: tag-height-attribute
+    - include: tag-width-attribute
+    - include: tag-depth-attribute
+    - include: tag-lspace-attribute
+    - include: tag-voffset-attribute
 
   #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
   linebreaking-tags:
@@ -1653,6 +1549,122 @@ contexts:
         - match: ''
           pop: true
 
+  #Specifies a width for an element
+  tag-width-attribute:
+    - match: '(?:^|\s+)\b((width)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.width.mathml
+        2: entity.other.attribute-name.width.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.width.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.width.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #specifies a height for an element
+  tag-height-attribute:
+    - match: '(?:^|\s+)\b((height)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.height.mathml
+        2: entity.other.attribute-name.height.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.height.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.height.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #specifies a depth for an element
+  tag-depth-attribute:
+    - match: '(?:^|\s+)\b((depth)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.depth.mathml
+        2: entity.other.attribute-name.depth.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.depth.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.depth.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #specifies vertical offset for an element
+  tag-voffset-attribute:
+    - match: '(?:^|\s+)\b((voffset)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.voffset.mathml
+        2: entity.other.attribute-name.voffset.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.voffset.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.voffset.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.voffset.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
   tag-id-attribute:
     - match: '(?:^|\s+)\b((id)\b\s*(=)\s*)'
       captures:
@@ -1772,7 +1784,7 @@ contexts:
         - match: ''
           pop: true
 
-
+  #attributes for the top-level `math` tag
   math-tags:
     - match: '(?:^|\s+)\b((display)\b\s*(=)\s*)'
       captures:
