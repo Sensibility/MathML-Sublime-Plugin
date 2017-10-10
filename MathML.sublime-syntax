@@ -1665,6 +1665,7 @@ contexts:
         - match: ''
           pop: true
 
+  #matches the id attribute, which is provided for use with stylesheets and cross-references
   tag-id-attribute:
     - match: '(?:^|\s+)\b((id)\b\s*(=)\s*)'
       captures:
