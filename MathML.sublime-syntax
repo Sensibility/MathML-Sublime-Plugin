@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|menclose|mfenced|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mscarries|mscarry|msgroup|msline|msrow|msub|msup|msubsup|mtable|mtd|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mover|mpadded|mscarries|mscarry|msgroup|msline|msrow|msub|msup|msubsup|mtable|mtd|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -240,6 +240,20 @@ contexts:
         - include: presentation-style-tags
         - include: mfenced-tags
         - include: tag-stuff
+
+    #captures the menclosed tag which encloses its contents in a specified notation, e.g. long division
+    - match: (</?)((?i:menclose)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.menclose.mathml
+      push:
+        - meta_scope: meta.tag.block.menclose.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tag-stuff
+        - include: tag-notation-attribute
 
     #captures the mstyle, which sets math style for all contained elements
     - match: (</?)((?i:mstyle)\b)
@@ -1875,6 +1889,35 @@ contexts:
           scope: punctuation.string.begin.mathml
           set: 
             - meta_scope: meta.attribute-with-value.valign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #sets enclosing notation, only valid for menclose (afaik)
+  tag-notation-attribute:
+    - match: '(?:^|\s+)\b((notation)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.notation.mathml
+        2: entity.other.attribute-name.notation.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.notation.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.notation.mathml string.quoted.double.mathml
             - match: "'"
               scope: punctuation.definition.string.end.mathml
               pop: true
