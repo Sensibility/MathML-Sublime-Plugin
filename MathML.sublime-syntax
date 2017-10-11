@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mscarries|mscarry|msline|msrow)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mscarries|mscarry|msline)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -480,6 +480,20 @@ contexts:
           pop: true
         - include: presentation-style-tags
         - include: msgroup-tags
+        - include: tag-stuff
+
+    #a row used inside of mstack elements
+    - match: (</?)((?i:msrow)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.msrow.mathml
+      push:
+        - meta_scope: meta.tag.block.msrow.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tag-position-attribute
         - include: tag-stuff
 
     - include: entities
@@ -1703,8 +1717,6 @@ contexts:
           scope: meta.attribute-with-value.shift.mathml string.unquoted.mathml
         - match: ''
           pop: true
-
-
 
   #A collection of basically every attribute, since mstyle can have it all
   #( a living list to be updated as I progress)
