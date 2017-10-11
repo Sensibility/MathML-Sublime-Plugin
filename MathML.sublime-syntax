@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mlongdiv|mscarries|mscarry|msgroup|msline|msrow)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mscarries|mscarry|msgroup|msline|msrow)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -451,6 +451,21 @@ contexts:
           pop: true
         - include: presentation-style-tags
         - include: mstack-tags
+        - include: tag-stuff
+
+    #Long division
+    - match: (</?)((?i:mlongdiv)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mlongdiv.mathml
+      push:
+        - meta_scope: meta.tag.block.mlongdiv.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: mstack-tags
+        - include: tag-longdivstyle-attribute
         - include: tag-stuff
 
     - include: entities
@@ -2794,7 +2809,36 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.align.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.notation.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #sets style for long division, only valid for mlongdiv (afaik)
+  tag-longdivstyle-attribute:
+    - match: '(?:^|\s+)\b((longdivstyle)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.longdivstyle.mathml
+        2: entity.other.attribute-name.longdivstyle.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.longdivstyle.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.longdivstyle.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.longdivstyle.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
