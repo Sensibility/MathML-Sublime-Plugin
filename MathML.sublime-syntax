@@ -1135,6 +1135,408 @@ contexts:
         - match: ''
           pop: true
 
+  #attributes valid on an mtable tag
+  mtable-tags:
+
+    - include: tag-displaystyle-attribute
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((alignmentscope)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.alignmentscope.mathml
+        2: entity.other.attribute-name.alignmentscope.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.alignmentscope.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.alignmentscope.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.alignmentscope.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((columnwidth)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.columnwidth.mathml
+        2: entity.other.attribute-name.columnwidth.mathml
+        3: punctuation.columnwidth.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.columnwidth.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.columnwidth.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.columnwidth.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((rowspacing)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.rowspacing.mathml
+        2: entity.other.attribute-name.rowspacing.mathml
+        3: punctuation.rowspacing.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rowspacing.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rowspacing.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.rowspacing.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((columnspacing)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.columnspacing.mathml
+        2: entity.other.attribute-name.columnspacing.mathml
+        3: punctuation.columnspacing.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.columnspacing.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.columnspacing.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.columnspacing.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((rowlines)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.rowlines.mathml
+        2: entity.other.attribute-name.rowlines.mathml
+        3: punctuation.rowlines.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rowlines.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rowlines.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.rowlines.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((columnlines)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.columnlines.mathml
+        2: entity.other.attribute-name.columnlines.mathml
+        3: punctuation.columnlines.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.columnlines.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.columnlines.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.columnlines.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((frame)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.frame.mathml
+        2: entity.other.attribute-name.frame.mathml
+        3: punctuation.frame.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.frame.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.frame.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.frame.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((framespacing)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.framespacing.mathml
+        2: entity.other.attribute-name.framespacing.mathml
+        3: punctuation.framespacing.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.framespacing.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.framespacing.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.framespacing.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((equalrows)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.equalrows.mathml
+        2: entity.other.attribute-name.equalrows.mathml
+        3: punctuation.equalrows.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.equalrows.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.equalrows.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.equalrows.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((equalcolumns)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.equalcolumns.mathml
+        2: entity.other.attribute-name.equalcolumns.mathml
+        3: punctuation.equalcolumns.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.equalcolumns.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.equalcolumns.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.equalcolumns.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((side)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.side.mathml
+        2: entity.other.attribute-name.side.mathml
+        3: punctuation.side.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.side.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.side.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.side.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies a character to be used as a separator
+    - match: '(?:^|\s+)\b((minlabelspacing)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.minlabelspacing.mathml
+        2: entity.other.attribute-name.minlabelspacing.mathml
+        3: punctuation.minlabelspacing.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.minlabelspacing.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.minlabelspacing.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.minlabelspacing.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #attributes which specify the number of rows/columns a table data cell spans
+  mtd-tags:
+
+    #specifies how many rows this data spans
+
+
+    - match: '(?:^|\s+)\b((rowspan)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.rowspan.mathml
+        2: entity.other.attribute-name.rowspan.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rowspan.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.rowspan.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.rowspan.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies how many columns this data spans
+    - match: '(?:^|\s+)\b((colspan)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.colspan.mathml
+        2: entity.other.attribute-name.colspan.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.colspan.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.colspan.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.colspan.mathml string.unquoted.mathml
+        - match: ''
+          pop: true       
+
   #A collection of basically every attribute, since mstyle can have it all
   #( a living list to be updated as I progress)
   mstyle-tags:
@@ -1178,32 +1580,7 @@ contexts:
           pop: true
 
     #sets the displaystyle
-    - match: '(?:^|\s+)\b((displaystyle)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.displaystyle.mathml
-        2: entity.other.attribute-name.displaystyle.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.displaystyle.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.displaystyle.mathml string.quoted.single.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.displaystyle.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    - include: tag-displaystyle-attribute
 
     #sets a multiplier for sub and superscripts
     - match: '(?:^|\s+)\b((scriptsizemultiplier)\b\s*(=)\s*)'
@@ -2077,6 +2454,36 @@ contexts:
           scope: meta.attribute-with-value.superscriptshift.mathml string.unquoted.mathml
         - match: ''
           pop: true
+
+  #sets the displaystyle
+  tag-displaystyle-attribute:
+
+    - match: '(?:^|\s+)\b((displaystyle)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.displaystyle.mathml
+        2: entity.other.attribute-name.displaystyle.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.displaystyle.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.displaystyle.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.displaystyle.mathml string.unquoted.mathml
+        - match: ''
+          pop: true    
 
   #matches the id attribute, which is provided for use with stylesheets and cross-references
   tag-id-attribute:
