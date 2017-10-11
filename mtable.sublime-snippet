@@ -1,0 +1,7 @@
+<snippet>
+	<content><![CDATA[<mtable">
+		${1:<!-- table rows -->}
+</mtable>]]></content>
+	<tabTrigger>table</tabTrigger>
+	<scope>text.mathml.basic &amp; (- meta.tag | punctuation.definition.tag.begin)</scope>
+</snippet>
