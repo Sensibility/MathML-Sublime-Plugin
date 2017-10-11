@@ -439,6 +439,20 @@ contexts:
         - include: tabular-alignment-tags
         - include: tag-stuff
 
+    #Stacked equations for e.g. teaching elementary arithmetic
+    - match: (</?)((?i:mstack)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mstack.mathml
+      push:
+        - meta_scope: meta.tag.block.mstack.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: mstack-tags
+        - include: tag-stuff
+
     - include: entities
     - match: <.*>
       scope: invalid.illegal.incomplete.mathml
@@ -1537,6 +1551,41 @@ contexts:
           scope: meta.attribute-with-value.colspan.mathml string.unquoted.mathml
         - match: ''
           pop: true       
+
+  #attributes describing alignment for mstack tags
+  mstack-tags:
+
+    #specifies alignment of a stack relative to its environment
+    - include: tag-align-attribute
+
+    #specifies alignment of a stack's rows
+    - match: '(?:^|\s+)\b((stackalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.stackalign.mathml
+        2: entity.other.attribute-name.stackalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.stackalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.stackalign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.stackalign.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
 
   #A collection of basically every attribute, since mstyle can have it all
   #( a living list to be updated as I progress)
