@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mscarries|mscarry|msgroup|msline|msrow|mtable|mtd|mtr)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mscarries|mscarry|msgroup|msline|msrow|mtable|mtd|mtr)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -370,6 +370,31 @@ contexts:
         - include: tag-accentunder-attribute
         - include: presentation-style-tags
         - include: tag-stuff
+
+    #A list of sub- and superscripts to attach to a base, with optional prescripts
+    - match: (</?)((?i:mmultiscripts)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mmultiscripts.mathml
+      push:
+        - meta_scope: meta.tag.block.mmultiscripts.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-superscriptshift
+        - include: tag-subscriptshift
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #mmultiscripts sub-elements which have no valid attributes and are self-closing
+    - match: (<)((?i:none|mprescripts)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.multiscriptsubelem.mathml
+      push:
+        - match: '/?>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
 
     - include: entities
     - match: <.*>
