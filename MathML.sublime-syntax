@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mscarries|mscarry|msgroup|msline|msrow|mtable|mtd|mtr)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mlongdiv|mscarries|mscarry|msgroup|msline|msrow)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -395,6 +395,48 @@ contexts:
         - match: '/?>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
+
+    #encloses a tabular environment
+    - match: (</?)((?i:mtable)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mtable.mathml
+      push:
+        - meta_scope: meta.tag.block.mtable.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tabular-alignment-tags
+        - include: tag-stuff
+
+    #labeled or unlabeled table row
+    - match: (</?)((?i:mtr|mlabeledtr)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mtr.mathml
+      push:
+        - meta_scope: meta.tag.block.mtr.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tabular-alignment-tags
+        - include: tag-stuff
+
+    #table data
+    - match: (</?)((?i:mtd)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mtd.mathml
+      push:
+        - meta_scope: meta.tag.block.mtd.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: tabular-alignment-tags
+        - include: tag-stuff
 
     - include: entities
     - match: <.*>
@@ -1685,6 +1727,93 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.indentshiftlast.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #attributes that specifiy various alignments in tabular environments
+  tabular-alignment-tags:
+
+    #sets alignment of rows
+    - match: '(?:^|\s+)\b((rowalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.rowalign.mathml
+        2: entity.other.attribute-name.rowalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.rowalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.rowalign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #sets alignment of columns
+    - match: '(?:^|\s+)\b((columnalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.columnalign.mathml
+        2: entity.other.attribute-name.columnalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.columnalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.columnalign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #a list of alignment markers to be used for alignment
+    - match: '(?:^|\s+)\b((groupalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.groupalign.mathml
+        2: entity.other.attribute-name.groupalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.groupalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.groupalign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
