@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mscarries|mscarry|msline)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|msline)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -495,6 +495,37 @@ contexts:
         - include: presentation-style-tags
         - include: tag-position-attribute
         - include: tag-stuff
+
+    #used for displaying carries, borrows and/or crossouts, essentially a special `msrow` element
+    - match: (</?)((?i:mscarries)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mscarries.mathml
+      push:
+        - meta_scope: meta.tag.block.mscarries.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: mscarries-tags
+        - include: tag-position-attribute
+        - include: tag-scriptsizemultiplier-attribute
+        - include: tag-stuff
+
+    #a single child of the `mscarries` element
+    - match: (</?)((?i:mscarries)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mscarries.mathml
+      push:
+        - meta_scope: meta.tag.block.mscarries.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: mscarries-tags
+        - include: tag-stuff
+
 
     - include: entities
     - match: <.*>
@@ -1718,6 +1749,65 @@ contexts:
         - match: ''
           pop: true
 
+  #positioning attributes for specially-treated 'carries' rows in mstacks
+  mscarries-tags:
+
+    #Specifies cardinal direction of the carry row relative to the row beneath it (which is considered to be the row upon which the carry "acts")
+    - match: '(?:^|\s+)\b((location)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.location.mathml
+        2: entity.other.attribute-name.location.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.location.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.location.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.location.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #Specifies a type of crossout to be applied to the carried-/borrowed-from or crossed-out character.
+    - match: '(?:^|\s+)\b((crossout)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.crossout.mathml
+        2: entity.other.attribute-name.crossout.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.crossout.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.crossout.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.crossout.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
   #A collection of basically every attribute, since mstyle can have it all
   #( a living list to be updated as I progress)
   mstyle-tags:
@@ -1763,33 +1853,8 @@ contexts:
     #sets the displaystyle
     - include: tag-displaystyle-attribute
 
-    #sets a multiplier for sub and superscripts
-    - match: '(?:^|\s+)\b((scriptsizemultiplier)\b\s*(=)\s*)'
-      captures:
-        1: meta.attribute-with-value.scriptsizemultiplier.mathml
-        2: entity.other.attribute-name.scriptsizemultiplier.mathml
-        3: punctuation.separator.key-value.mathml
-      push:
-        - match: '"'
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.scriptsizemultiplier.mathml string.quoted.double.mathml
-            - match: '"'
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: "'"
-          scope: punctuation.definition.string.begin.mathml
-          set:
-            - meta_scope: meta.attribute-with-value.scriptsizemultiplier.mathml string.quoted.single.mathml
-            - match: "'"
-              scope: punctuation.definition.string.end.mathml
-              pop: true
-            - include: attribute-entities
-        - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.scriptsizemultiplier.mathml string.unquoted.mathml
-        - match: ''
-          pop: true
+    #sets a multiplier for scriptsizes
+    - include: tag-scriptsizemultiplier-attribute
 
     #a minimum font size to be used for scripts
     - match: '(?:^|\s+)\b((scriptminsize)\b\s*(=)\s*)'
@@ -2928,6 +2993,35 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.position.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #sets a multiplier for sub and superscripts
+  tag-scriptsizemultiplier-attribute:
+    - match: '(?:^|\s+)\b((scriptsizemultiplier)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.scriptsizemultiplier.mathml
+        2: entity.other.attribute-name.scriptsizemultiplier.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.scriptsizemultiplier.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.scriptsizemultiplier.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.scriptsizemultiplier.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
