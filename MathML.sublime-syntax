@@ -74,15 +74,19 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
+
+    #encloses an interactive expression or set of expressions
     - match: (</?)((?i:maction)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
-        2: entity.name.tag.block.any.mathml
+        2: entity.name.tag.block.maction.mathml
       push:
-        - meta_scope: meta.tag.block.any.mathml
+        - meta_scope: meta.tag.block.maction.mathml
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
+        - include: presentation-style-tags
+        - include: maction-tags
         - include: tag-stuff
 
     #captures the math operator tag
@@ -2166,6 +2170,65 @@ contexts:
     - include: tag-depth-attribute
     - include: tag-lspace-attribute
     - include: tag-voffset-attribute
+
+  #attributes that describe an action and optionally the index of a child element to be acted upon or used in some other special way
+  maction-tags:
+
+    #names an action to be used. This is one of the few attributes that is actually allowed to have any value, since different renderers may support different actions
+    - match: '(?:^|\s+)\b((actiontype)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.actiontype.mathml
+        2: entity.other.attribute-name.actiontype.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.actiontype.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.actiontype.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.actiontype.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies the index of the child element to be acted upon or used in some special way.
+    - match: '(?:^|\s+)\b((selection)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.selection.mathml
+        2: entity.other.attribute-name.selection.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.selection.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.selection.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.selection.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
 
   #A bunch of attributes for tags that can determine line breaks (so far only `mo` and `mspace`)
   linebreaking-tags:
