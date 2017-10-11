@@ -527,13 +527,13 @@ contexts:
         - include: tag-stuff
 
     #used for displaying carries, borrows and/or crossouts, essentially a special `msrow` element
-    - match: (</?)((?i:msline)\b)
+    - match: (<)((?i:msline)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.msline.mathml
       push:
         - meta_scope: meta.tag.block.msline.mathml
-        - match: '>'
+        - match: '/?>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: presentation-style-tags
