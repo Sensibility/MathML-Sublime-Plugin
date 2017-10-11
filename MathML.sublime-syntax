@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mover|mscarries|mscarry|msgroup|msline|msrow|mtable|mtd|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mscarries|mscarry|msgroup|msline|msrow|mtable|mtd|mtr)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -296,7 +296,7 @@ contexts:
         - include: presentation-style-tags
         - include: tag-stuff
 
-    #subscript
+    #superscript
     - match: (</?)((?i:msup)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
@@ -322,6 +322,52 @@ contexts:
           pop: true
         - include: tag-subscriptshift
         - include: tag-superscriptshift
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #undertext
+    - match: (</?)((?i:munder)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.munder.mathml
+      push:
+        - meta_scope: meta.tag.block.munder.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-accentunder-attribute
+        - include: tag-align-attribute
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #overtext
+    - match: (</?)((?i:mover)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.mover.mathml
+      push:
+        - meta_scope: meta.tag.block.mover.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-align-attribute
+        - include: tag-accent-attribute
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #undertext/overtext pair
+    - match: (</?)((?i:munderover)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.munderover.mathml
+      push:
+        - meta_scope: meta.tag.block.munderover.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-align-attribute
+        - include: tag-accent-attribute
+        - include: tag-accentunder-attribute
         - include: presentation-style-tags
         - include: tag-stuff
 
@@ -1966,6 +2012,64 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.accent.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #matches attributes for marking accents munder contents
+  tag-accentunder-attribute:
+    - match: '(?:^|\s+)\b((accentunder)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.accentunder.mathml
+        2: entity.other.attribute-name.accentunder.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match:  '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.accentunder.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.accentunder.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.accentunder.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #sets alignment
+  tag-align-attribute:
+    - match: '(?:^|\s+)\b((align)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.align.mathml
+        2: entity.other.attribute-name.align.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.align.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.align.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
