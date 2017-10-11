@@ -439,6 +439,34 @@ contexts:
         - include: tabular-alignment-tags
         - include: tag-stuff
 
+    #alignment mark
+    - match: (</?)((?i:malignmark)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.malignmark.mathml
+      push:
+        - meta_scope: meta.tag.block.malignmark.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: malignmark-tags
+        - include: tag-stuff
+
+    #alignment group
+    - match: (</?)((?i:maligngroup)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.maligngroup.mathml
+      push:
+        - meta_scope: meta.tag.block.maligngroup.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: maligngroup-tags
+        - include: tag-stuff
+
     - include: entities
     - match: <.*>
       scope: invalid.illegal.incomplete.mathml
@@ -1537,6 +1565,68 @@ contexts:
           scope: meta.attribute-with-value.colspan.mathml string.unquoted.mathml
         - match: ''
           pop: true       
+
+  #alignment mark attributes
+  malignmark-tags:
+
+    #specifies how many columns this data spans
+    - match: '(?:^|\s+)\b((edge)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.edge.mathml
+        2: entity.other.attribute-name.edge.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.edge.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.edge.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.edge.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #alignment group attributes
+  maligngroup-tags:
+
+    #group alignment
+    - match: '(?:^|\s+)\b((groupalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.groupalign.mathml
+        2: entity.other.attribute-name.groupalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.groupalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.groupalign.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.groupalign.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
 
   #A collection of basically every attribute, since mstyle can have it all
   #( a living list to be updated as I progress)
