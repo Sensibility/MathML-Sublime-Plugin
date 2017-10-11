@@ -913,7 +913,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.src.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -944,7 +944,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.alt.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -1586,6 +1586,62 @@ contexts:
         - match: ''
           pop: true
 
+    #specifies alignment of a column's characters
+    - match: '(?:^|\s+)\b((charalign)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.charalign.mathml
+        2: entity.other.attribute-name.charalign.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.charalign.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.charalign.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.charalign.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #specifies spacing between columns
+    - match: '(?:^|\s+)\b((charspacing)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.charspacing.mathml
+        2: entity.other.attribute-name.charspacing.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.charspacing.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.string.begin.mathml
+          set: 
+            - meta_scope: meta.attribute-with-value.charspacing.mathml string.quoted.double.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.charspacing.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
 
   #A collection of basically every attribute, since mstyle can have it all
   #( a living list to be updated as I progress)
@@ -1926,7 +1982,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.mathbackground.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -1954,7 +2010,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.mathcolor.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2184,7 +2240,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.rowalign.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2212,7 +2268,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.columnalign.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2240,7 +2296,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.groupalign.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2680,7 +2736,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.align.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2709,7 +2765,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.valign.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2738,7 +2794,7 @@ contexts:
               pop: true
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
-          scope: meta.attribute-with-value.id.mathml string.unquoted.mathml
+          scope: meta.attribute-with-value.align.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
@@ -2753,7 +2809,7 @@ contexts:
         - match: '"'
           scope: punctuation.definition.string.begin.mathml
           set:
-            - meta_scope: meta.attribute-with-value.mathml string.quoted.double.mathml
+            - meta_scope: meta.attribute-with-value.display.mathml string.quoted.double.mathml
             - match: '"'
               scope: punctuation.definition.string.end.mathml
               pop: true
@@ -2761,8 +2817,7 @@ contexts:
         - match: "'"
           scope: punctuation.definition.string.begin.mathml
           set:
-            - meta_scope: meta.attribute-with-value.id.mathml string.quoted.single.mathml
-            - meta_content_scope: meta.toc-list.id.mathml
+            - meta_scope: meta.attribute-with-value.display.mathml string.quoted.single.mathml
             - match: "'"
               scope: punctuation.definition.string.end.mathml
               pop: true
