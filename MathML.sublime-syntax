@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mover|mscarries|mscarry|msgroup|msline|msrow|msub|msup|msubsup|mtable|mtd|mtr|munder|munderover)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mlabeledtr|mlongdiv|mmultiscripts|mover|mscarries|mscarry|msgroup|msline|msrow|mtable|mtd|mtr|munder|munderover)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -282,6 +282,48 @@ contexts:
         - include: presentation-style-tags
         - include: tag-stuff
 
+    #subscript
+    - match: (</?)((?i:msub)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.msub.mathml
+      push:
+        - meta_scope: meta.tag.block.msub.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-subscriptshift
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #subscript
+    - match: (</?)((?i:msup)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.msup.mathml
+      push:
+        - meta_scope: meta.tag.block.msup.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-superscriptshift
+        - include: presentation-style-tags
+        - include: tag-stuff
+
+    #subscript/superscript pair
+    - match: (</?)((?i:msubsup)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.msubsup.mathml
+      push:
+        - meta_scope: meta.tag.block.msubsup.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: tag-subscriptshift
+        - include: tag-superscriptshift
+        - include: presentation-style-tags
+        - include: tag-stuff
 
     - include: entities
     - match: <.*>
@@ -1775,6 +1817,64 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.voffset.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #specifies minimum amount of shift for subscript
+  tag-subscriptshift-attribute:
+    - match: '(?:^|\s+)\b((subscriptshift)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.subscriptshift.mathml
+        2: entity.other.attribute-name.subscriptshift.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.subscriptshift.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.subscriptshift.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.subscriptshift.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+  #specifies minimum amount of shift for superscript
+  tag-superscriptshift-attribute:
+    - match: '(?:^|\s+)\b((superscriptshift)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.superscriptshift.mathml
+        2: entity.other.attribute-name.superscriptshift.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.superscriptshift.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.superscriptshift.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.superscriptshift.mathml string.unquoted.mathml
         - match: ''
           pop: true
 
