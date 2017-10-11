@@ -407,6 +407,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: presentation-style-tags
+        - include: tag-width-attribute
         - include: tabular-alignment-tags
         - include: tag-stuff
 
