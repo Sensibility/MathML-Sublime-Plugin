@@ -74,7 +74,7 @@ contexts:
           scope: punctuation.definition.tag.end.mathml
           pop: true
         - include: tag-stuff
-    - match: (</?)((?i:maction|maligngroup|malignmark|mscarries|mscarry|msgroup|msline|msrow)\b)
+    - match: (</?)((?i:maction|maligngroup|malignmark|mscarries|mscarry|msline|msrow)\b)
       captures:
         1: punctuation.definition.tag.begin.mathml
         2: entity.name.tag.block.any.mathml
@@ -466,6 +466,20 @@ contexts:
         - include: presentation-style-tags
         - include: mstack-tags
         - include: tag-longdivstyle-attribute
+        - include: tag-stuff
+
+    #groups rows inside of long division or mstacks
+    - match: (</?)((?i:msgroup)\b)
+      captures:
+        1: punctuation.definition.tag.begin.mathml
+        2: entity.name.tag.block.msgroup.mathml
+      push:
+        - meta_scope: meta.tag.block.msgroup.mathml
+        - match: '>'
+          scope: punctuation.definition.tag.end.mathml
+          pop: true
+        - include: presentation-style-tags
+        - include: msgroup-tags
         - include: tag-stuff
 
     - include: entities
@@ -1656,6 +1670,66 @@ contexts:
           scope: meta.attribute-with-value.charspacing.mathml string.unquoted.mathml
         - match: ''
           pop: true
+
+  #positioning attributes for grouped rows inside of mstack or mlongdiv tags
+  msgroup-tags:
+
+    #Specifies horizontal positioning of contained columns
+    - match: '(?:^|\s+)\b((position)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.position.mathml
+        2: entity.other.attribute-name.position.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.position.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.position.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.position.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
+    #Specifies incremental shift of each succsessive child element
+    - match: '(?:^|\s+)\b((shift)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.shift.mathml
+        2: entity.other.attribute-name.shift.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.shift.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.shift.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.shift.mathml string.unquoted.mathml
+        - match: ''
+          pop: true
+
 
 
   #A collection of basically every attribute, since mstyle can have it all
