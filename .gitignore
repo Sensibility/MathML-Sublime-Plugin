@@ -103,3 +103,4 @@ ENV/
 # Sublime project files
 *.sublime-project
 *.sublime-workspace
+*.sublime-package
