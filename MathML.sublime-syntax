@@ -310,7 +310,7 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: tag-subscriptshift
+        - include: tag-subscriptshift-attribute
         - include: presentation-style-tags
         - include: tag-stuff
 
@@ -324,7 +324,7 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: tag-superscriptshift
+        - include: tag-superscriptshift-attribute
         - include: presentation-style-tags
         - include: tag-stuff
 
@@ -338,8 +338,8 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: tag-subscriptshift
-        - include: tag-superscriptshift
+        - include: tag-subscriptshift-attribute
+        - include: tag-superscriptshift-attribute
         - include: presentation-style-tags
         - include: tag-stuff
 
@@ -399,8 +399,8 @@ contexts:
         - match: '>'
           scope: punctuation.definition.tag.end.mathml
           pop: true
-        - include: tag-superscriptshift
-        - include: tag-subscriptshift
+        - include: tag-superscriptshift-attribute
+        - include: tag-subscriptshift-attribute
         - include: presentation-style-tags
         - include: tag-stuff
 
