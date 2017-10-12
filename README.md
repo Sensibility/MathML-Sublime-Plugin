@@ -23,7 +23,7 @@ I highly recommend checking out the MDN documentation for examples and reference
 >Then, if you want, remove any unnecessary files like e.g. `.gitignore`. Or don't. Should work either way.
 
 ### Pre-packaged
->As of version 1.2.0, full packages are available as compressed `.sublime-package` files under "Releases" ([here](https://github.com/Sensibility/MathML-Sublime-Plugin/releases)).
+>As of version 1.2.0, full packages are available as compressed `.sublime-package` files under "Releases" ([here](https://github.com/Sensibility/MathML-Sublime-Plugin/releases)). To install these files, place them in your "Installed Packages" directory (`%APPDATA%\Sublime Text 3\Installed Packages` on Windows, `$HOME/.config/sublime-text-3/Installed Packages/` on Linux/macOS)
 
 ## Planned Features
 
