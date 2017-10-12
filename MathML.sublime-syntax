@@ -1,3 +1,5 @@
+%YAML 1.2
+---
 #     This file is part of Sensibility's "MathML" Plugin.
 #
 #     Sensibility's "MathML" Plugin is free software: you can redistribute it and/or modify
@@ -12,8 +14,6 @@
 #
 #     You should have received a copy of the GNU General Public License
 #     along with Sensibility's "MathML" Plugin.  If not, see <http://www.gnu.org/licenses/>.
-%YAML 1.2
----
 name: MathML
 file_extensions:
   - mathml
