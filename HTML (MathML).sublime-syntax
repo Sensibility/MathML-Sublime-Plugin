@@ -3,9 +3,8 @@
 name: HTML (MathML)
 file_extensions:
   - mhtml
-  - html #possibly dangerous, but we'll see
   - html.math
-#  - html.mathml
+  - html.mathml
 scope: text.html.mathml
 contexts:
   main:
