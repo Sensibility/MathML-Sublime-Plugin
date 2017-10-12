@@ -27,10 +27,18 @@ def get_tag_to_attributes():
         'mfrac': ['bevelled', 'denomalign', 'linethickness', 'numalign']
     }
 
+    # tags that are valid for all presentation elements
+    presentation_attributes = [
+        'mathbackground', 'mathcolor'
+    ]
+
     # Assume that global attributes are common to all MathML elements
     global_attributes = [
-        'id', 'href', 'mathbackground', 'mathcolor'
+        'id', 'href', 'xref', 'class', 'style'
     ]
+
+    # Currently, only presentation MathML is supported, so this is valid
+    global_attributes += presentation_attributes
 
     for attributes in tag_dict.values():
         attributes.extend(global_attributes)
@@ -125,7 +133,7 @@ class MathmlTagCompletions(sublime_plugin.EventListener):
 
         #This part will be useful in the future when I get more than one tag working
         #default_list += ([
-            
+
         #])
 
         return default_list
