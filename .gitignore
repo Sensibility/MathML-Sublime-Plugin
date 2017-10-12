@@ -1,3 +1,6 @@
+#Network filesystem index files (damn you, alamode!)
+.nfs*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -103,4 +106,3 @@ ENV/
 # Sublime project files
 *.sublime-project
 *.sublime-workspace
-*.sublime-package
