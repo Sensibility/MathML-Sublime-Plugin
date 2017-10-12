@@ -1,0 +1,15 @@
+## SYNTAX TEST "Packages/MathML/HTML (MathML).sublime-syntax"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>testquest</title>
+</head>
+<body>
+<div>some content</div>
+<math>
+    <mn>a</mn>
+    <mo>+</mo>
+    <mn>b</mn>
+</math>
+</body>
+</html>
