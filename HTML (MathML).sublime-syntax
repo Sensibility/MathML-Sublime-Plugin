@@ -5,36 +5,36 @@ file_extensions:
   - mhtml
   - html #possibly dangerous, but we'll see
   - html.math
-  - html.mathml
+#  - html.mathml
 scope: text.html.mathml
 contexts:
   main:
     - match: ''
       push: 'scope:text.html.basic'
       with_prototype:
-        - match: "(?:^\s+)?(<)((?i:math))\b(?![^>]*/>)"
+        - match: '(?:^\s+)?(<)((?i:math))\b(?![^>]*/>)'
           captures:
-            0: meta.tag.math.begin.html
-            1: punctuation.definition.tag.begin.html
+            0: meta.tag.math.begin.mathml
+            1: punctuation.definition.tag.begin.mathml
             2: entity.name.tag.math.mathml
           push:
             - match: (?i)(</)(math)(>)
               captures:
-                0: meta.tag.math.end.html
-                1: punctuation.definition.tag.begin.html
-                2: entity.name.tag.math.mathml
-                3: punctuation.definition.tag.end.html
+                0: meta.tag.math.end.mathml
+                1: punctuation.definition.tag.begin.mathml
+                2: entity.name.tag.math.html
+                3: punctuation.definition.tag.end.mathml
               pop: true
             - match: '>'
-              scope: meta.tag.math.begin.html punctuation.definition.tag.end.html
+              scope: meta.tag.math.begin.mathml punctuation.definition.tag.end.mathml
               push:
                 - meta_content_scope: source.mathml.embedded.html
-                - include: 'scope:source.mathml'
+                - include: 'MathML.sublime-syntax'
               with_prototype:
                 - match: (?i)(?=</math)
                   pop: true
             - match: ''
               push:
-                - meta_scope: meta.tag.math.begin.html
+                - meta_scope: meta.tag.math.begin.mathml
                 - match: '(?=>)'
                   pop: true
