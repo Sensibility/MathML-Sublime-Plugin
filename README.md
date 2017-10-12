@@ -2,12 +2,14 @@
 ## About
 A Package for MathML syntax highlighting and basic snippets in Sublime Text 3.x
 This package enforces a subset of the W3C MathML 3.0 standard, which can be found [here](https://www.w3.org/TR/MathML3/).
-Unlike HTML, MathML does NOT meaningfully allow arbitrary attributes on any and all tags, so don't expect it to highlight them. The package does currently support all presentation elements listed on MDN [here](https://developer.mozilla.org/en-US/docs/Web/MathML/Element). Nearly all valid attributes are also supported, albeit with . However, by default, highlighting is only available in dedicated mathml files with the extensions:
-* `.mathml`
+Unlike HTML, MathML does NOT meaningfully allow arbitrary attributes on any and all tags, so don't expect it to highlight them. The package does currently support all presentation elements listed on MDN [here](https://developer.mozilla.org/en-US/docs/Web/MathML/Element). Nearly all valid attributes are also supported, albeit with exclusion of some deprecated MathML 2.0 features, and no support for xml namespace-included attributes. By default, highlighting is available in dedicated mathml files as well as inside special html files with the extensions:
+* `.mathml` (also `.html.mathml`, somewhat reduntantly)
 * `.mathm`
-* `.math`
+* `.math` (also `.html.math`, somewhat reduntantly)
+* `.mhtml`
 
-which is to say, not inside of HTML (that functionality is planned, however).
+If you want highlighting for MathML inside of files without these extensions, use the command palette or select it from the menu under View -> Syntax -> MathML -> HTML (MathML)
+
 I highly recommend checking out the MDN documentation for examples and reference materials when writing MathML - especially since Firefox is the only browser that natively supports MathML. A Chrome Extension which enables rendering of MathML within web pages is available [here](https://chrome.google.com/webstore/detail/fmath-html-%2B-mathml-solut/emdjdpchbjipnjhkfljbcapgfecmnglm).
 
 ## Installation
@@ -22,7 +24,6 @@ To install, clone or download this repository into your Packages directory (`%AP
 Currently still in the works are the following features:
 
 * Integration with Package Control - Pull request pending
-* Highlighting within HTML documents
 * Completions for supported elements
 * More snippets (or possibly less if completions prove easier and faster)
 * Enforced values for attributes, including
