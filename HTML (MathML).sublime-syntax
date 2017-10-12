@@ -1,0 +1,40 @@
+%YAML 1.2
+---
+name: HTML (MathML)
+file_extensions:
+  - mhtml
+  - html #possibly dangerous, but we'll see
+  - html.math
+  - html.mathml
+scope: text.html.mathml
+contexts:
+  main:
+    - match: ''
+      push: 'scope:text.html.basic'
+      with_prototype:
+        - match: "(?:^\s+)?(<)((?i:math))\b(?![^>]*/>)"
+          captures:
+            0: meta.tag.math.begin.html
+            1: punctuation.definition.tag.begin.html
+            2: entity.name.tag.math.mathml
+          push:
+            - match: (?i)(</)(math)(>)
+              captures:
+                0: meta.tag.math.end.html
+                1: punctuation.definition.tag.begin.html
+                2: entity.name.tag.math.mathml
+                3: punctuation.definition.tag.end.html
+              pop: true
+            - match: '>'
+              scope: meta.tag.math.begin.html punctuation.definition.tag.end.html
+              push:
+                - meta_content_scope: source.mathml.embedded.html
+                - include: 'scope:source.mathml'
+              with_prototype:
+                - match: (?i)(?=</math)
+                  pop: true
+            - match: ''
+              push:
+                - meta_scope: meta.tag.math.begin.html
+                - match: '(?=>)'
+                  pop: true
