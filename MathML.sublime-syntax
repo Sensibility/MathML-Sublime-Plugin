@@ -3058,6 +3058,66 @@ contexts:
         - match: ''
           pop: true
 
+  #sets a reference to the specified id
+  tag-xref-attribute:
+    - match: '(?:^|\s+)\b((xref)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.xref.mathml
+        2: entity.other.attribute-name.xref.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.xref.mathml string.quoted.double.mathml
+            - meta_content_scope: meta.toc-list.xref.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.xref.mathml string.quoted.single.mathml
+            - meta_content_scope: meta.toc-list.xref.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.xref.mathml string.unquoted.mathml meta.toc-list.xref.mathml
+        - match: ''
+          pop: true
+
+  #establishes the element as a link to the specified URI
+  tag-href-attribute:
+    - match: '(?:^|\s+)\b((href)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.href.mathml
+        2: entity.other.attribute-name.href.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.href.mathml string.quoted.double.mathml
+            - match: '"'
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: "'"
+          scope: punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.href.mathml string.quoted.single.mathml
+            - match: "'"
+              scope: punctuation.definition.string.end.mathml
+              pop: true
+            - include: attribute-entities
+        - match: '(?:[^\s<>/''"]|/(?!>))+'
+          scope: meta.attribute-with-value.href.mathml string.unquoted.mathml meta.toc-list.href.mathml
+        - match: ''
+          pop: true
+
   #matches the class attribute, which is provided for use with stylesheets
   tag-class-attribute:
     - match: '(?:^|\s+)\b((class)\b\s*(=)\s*)'
@@ -3086,6 +3146,57 @@ contexts:
             - include: attribute-entities
         - match: '(?:[^\s<>/''"]|/(?!>))+'
           scope: meta.attribute-with-value.class.mathml string.unquoted.mathml meta.class-name.mathml
+        - match: ''
+          pop: true
+
+  #adds styling with CSS highlighting to elements.
+  #Note that the use of CSS syntax in values for this attribute is not required or even preferred by the MathML spec
+  #and some elements may be meant to be rendered invisibly and either not properly respect styles set on them or even ignore styling entirely, at the discretion of the renderer.
+  tag-style-attribute:
+    - match: '(?:^|\s+)\b((style)\b\s*(=)\s*)'
+      captures:
+        1: meta.attribute-with-value.style.mathml
+        2: entity.other.attribute-name.style.mathml
+        3: punctuation.separator.key-value.mathml
+      push:
+        - match: '"'
+          scope: string.quoted.double punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.style.mathml
+            - meta_content_scope: source.css
+            - match: '"'
+              scope: string.quoted.double punctuation.definition.string.end.mathml
+              pop: true
+            - match: ''
+              # An anonymous context with an include is used here rather than
+              # a direct push, so that if the target context isn't found it's
+              # only a warning rather than an error. This will likely happen
+              # if the user has replaced the default CSS syntax
+              push:
+                - include: 'CSS.sublime-syntax#rule-list-body'
+              with_prototype:
+                - match: '(?=")'
+                  pop: true
+                - include: attribute-entities
+        - match: "'"
+          scope: string.quoted.single punctuation.definition.string.begin.mathml
+          set:
+            - meta_scope: meta.attribute-with-value.style.mathml
+            - meta_content_scope: source.css
+            - match: "'"
+              scope: string.quoted.single punctuation.definition.string.end.mathml
+              pop: true
+            - match: ''
+              # An anonymous context with an include is used here rather than
+              # a direct push, so that if the target context isn't found it's
+              # only a warning rather than an error. This will likely happen
+              # if the user has replaced the default CSS syntax
+              push:
+                - include: 'CSS.sublime-syntax#rule-list-body'
+              with_prototype:
+                - match: "(?=')"
+                  pop: true
+                - include: attribute-entities
         - match: ''
           pop: true
 
@@ -3375,6 +3486,7 @@ contexts:
   tag-stuff:
     - include: tag-id-attribute
     - include: tag-class-attribute
+    - include: tag-style-attribute
     - include: presentation-style-tags
     #- include: tag-generic-attribute
 
