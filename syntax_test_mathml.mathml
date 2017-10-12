@@ -5,13 +5,13 @@
 ##                                   ^ punctuation.definition.tag.end
 <!DOCTYPE math>
 <math id="" altimg="" display="" mathbackground="">
-	<semantics altimg="" class="">
-		<mi mathbackground="">a</mi>
-		<mo accent=" " form="infix" stretchy="true" symmetric="true" fence="false" moveablelimits="false">+</mo>
-		<mn>4</mn>
-		<mi mathsize="10">b</mi>
-		<mo largeop="true" separator="true" rspace="14pt" lspace="14pt">=</mo>
-		<ms>testquest</ms>
-		<mfrac id="test">
-	</semantics>
+    <semantics altimg="" class="">
+        <mi mathbackground="">a</mi>
+        <mo accent=" " form="infix" stretchy="true" symmetric="true" fence="false" moveablelimits="false">+</mo>
+        <mn>4</mn>
+        <mi mathsize="10">b</mi>
+        <mo largeop="true" separator="true" rspace="14pt" lspace="14pt">=</mo>
+        <ms>testquest</ms>
+        <mfrac id="test">
+    </semantics>
 </math>
