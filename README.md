@@ -13,11 +13,17 @@ If you want highlighting for MathML inside of files without these extensions, us
 I highly recommend checking out the MDN documentation for examples and reference materials when writing MathML - especially since Firefox is the only browser that natively supports MathML. A Chrome Extension which enables rendering of MathML within web pages is available [here](https://chrome.google.com/webstore/detail/fmath-html-%2B-mathml-solut/emdjdpchbjipnjhkfljbcapgfecmnglm).
 
 ## Installation
-To install, clone or download this repository into your Packages directory (`%APPDAT%\SUBLIME TEXT 3\PACKAGES` on Windows or `$HOME/.config/sublime-text-3/Packages` on Linux/macOS). For Linux/macOS users with `git` installed, enter these commands at a terminal:
+### Manual
+>To install, clone or download this repository into your Packages directory (`%APPDAT%\SUBLIME TEXT 3\PACKAGES` on Windows or `$HOME/.config/sublime-text-3/Packages` on Linux/macOS). For Linux/macOS users with `git` installed, enter these commands at a terminal:
 
 * `cd $HOME/.config/sublime-text-3/Packages` - enter Packages directory
 * `git clone git@github.com:Sensibility/MathML-Sublime-Plugin` - download the plugin
 * `mv MathML-Sublime-Plugin MathML` - rename package to something simpler (optional)
+
+>Then, if you want, remove any unnecessary files like e.g. `.gitignore`. Or don't. Should work either way.
+
+### Pre-packaged
+>As of version 1.2.0, full packages are available as compressed `.sublime-package` files under "Releases" ([here](https://github.com/Sensibility/MathML-Sublime-Plugin/releases)).
 
 ## Planned Features
 
