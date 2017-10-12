@@ -1,0 +1,10 @@
+{
+   "scope": "text.html - source - meta.tag, punctuation.definition.tag.begin",
+
+   "completions":
+   [
+      { "trigger": "math", "contents": "<math>$0</math>" },
+      { "trigger": "abbr\t<abbr>", "contents": "<abbr>$0</abbr>" },
+      { "trigger": "acronym", "contents": "<acronym>$0</acronym>" }
+   ]
+}
