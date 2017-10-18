@@ -13,6 +13,9 @@ If you want highlighting for MathML inside of files without these extensions, us
 I highly recommend checking out the MDN documentation for examples and reference materials when writing MathML - especially since Firefox is the only browser that natively supports MathML. A Chrome Extension which enables rendering of MathML within web pages is available [here](https://chrome.google.com/webstore/detail/fmath-html-%2B-mathml-solut/emdjdpchbjipnjhkfljbcapgfecmnglm).
 
 ## Installation
+### Package Control (*Reccomended*)
+As of version 1.2.0, this package may be installed from [Package Control](https://packagecontrol.io), which is certainly easiest. The name of the package is "MathML".
+
 ### Manual
 >To install, clone or download this repository into your Packages directory (`%APPDAT%\SUBLIME TEXT 3\PACKAGES` on Windows or `$HOME/.config/sublime-text-3/Packages` on Linux/macOS). For Linux/macOS users with `git` installed, enter these commands at a terminal:
 
@@ -29,7 +32,6 @@ I highly recommend checking out the MDN documentation for examples and reference
 
 Currently still in the works are the following features:
 
-* Integration with Package Control - Pull request pending
 * Completions for supported elements
 * More snippets (or possibly less if completions prove easier and faster)
 * Enforced values for attributes, including
