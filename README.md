@@ -41,3 +41,4 @@ Currently still in the works are the following features:
 * A linting system to check files to ensure that e.g. all `<mfrac>` tags have exactly two children, with a supporting build system
 * Content-MathML - This is essentially another markup language specified by MathML 3.0, meant to convey the meaning of mathematical formulae without providing a way to represent it (which is what Presentation-MathML is for).
 * Annotations - Annotations provide extra information about math markup, and are often used to define alternative representations such as LaTeX code. I'd like to support some additional syntaxes if they exist, but I need to know more about the Sublime Package system first and so this is a relatively low priority.
+* Preview - In files that contain only MathML (e.g. no HTML), show a preview of the equation. I'm not totally sure how difficult this would be and it's really the biggest (and stretchiest) of my stretch goals.
