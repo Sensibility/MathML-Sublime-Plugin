@@ -1,9 +1,10 @@
 {
-   "scope": "text.html - source - meta.tag, punctuation.definition.tag.begin",
+   "scope": "text.mathml.basic - source - meta.tag, punctuation.definition.tag.begin",
 
    "completions":
    [
       { "trigger": "math", "contents": "<math>$0</math>" },
+      {"trigger": "mfrac\t<mfrac...", "contents": "<mfrac>\n\t${1:<!-- numerator -->}\n\t${2:<!-- denominator -->}\n</mfrac>"},
       { "trigger": "abbr\t<abbr>", "contents": "<abbr>$0</abbr>" },
       { "trigger": "acronym", "contents": "<acronym>$0</acronym>" }
    ]
